@@ -20,6 +20,11 @@ def signup():
 	"""User sign up"""
 	return render_template("signup_form.html")
 
+@app.route("/search")
+def search():
+	"""User inputs search specifications here"""
+	return render_template("search.html")
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
