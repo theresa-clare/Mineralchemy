@@ -7,6 +7,10 @@
 </head>
 
 <body>
+	{% for flash in get_flashed_messages() %}
+		{{ flash }}
+	{% endfor %}
+
 	{% block content %}
 
 	{% endblock %}
