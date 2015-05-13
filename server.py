@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request, flash, session
+from model import User, connect_to_db, db
+
 
 app = Flask(__name__)
 
@@ -27,4 +29,8 @@ def search():
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.debug = True
+
+	connect_to_db(app)
+
+	app.run()
