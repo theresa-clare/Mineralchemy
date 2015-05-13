@@ -13,15 +13,38 @@ def index():
 	return render_template("homepage.html")
 
 
-@app.route("/login")
-def login():
+@app.route("/login", methods=['GET'])
+def show_login_form():
 	"""User login"""
 
 	return render_template("login_form.html")
 
 
+@app.route("/login", methods=['POST'])
+def login():
+	"""Log in user by checking to see if user is in user database and putting user in session."""
+
+	email = request.form["email"]
+	password = request.form["password"]
+
+	user = User.query.filter_by(email=email).first()
+
+	if not user:
+		flash("User not in database")
+		return redirect("/login")
+
+	if user.password != password:
+		flash("Password is incorrect")
+		return redirect("/login")
+
+	session["user_id"] = user.user_id
+
+	flash("Welcome back! You are now logged in.")
+	return redirect("/")
+
+
 @app.route("/signup", methods=['GET'])
-def show_signup():
+def show_signup_form():
 	"""Render form for the user to sign up."""
 
 	return render_template("signup_form.html")
