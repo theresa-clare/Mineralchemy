@@ -1,2 +1,4 @@
 env/
 secret.txt
+*.db
+*.pyc
