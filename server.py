@@ -43,6 +43,16 @@ def login():
 	return redirect("/")
 
 
+@app.route("/logout")
+def logout():
+	"""Log user out from session."""
+
+	del session["user_id"]
+	flash("You are now logged out.")
+
+	return redirect("/")
+
+
 @app.route("/signup", methods=['GET'])
 def show_signup_form():
 	"""Render form for the user to sign up."""
