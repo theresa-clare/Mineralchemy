@@ -81,6 +81,7 @@ def signup():
 @app.route("/search")
 def search():
 	"""User inputs search specifications here"""
+	
 	return render_template("search.html")
 
 
