@@ -5,10 +5,12 @@
 
 <p>We found {{ etsy_num_results }} results:</p>
 
-<ul>
-	{% for listing in etsy_listings %}
+{% for listing in etsy_listings %}
+	<ul>
+		<li>{{ listing["title"] }}</li>
+		<li><a href={{ listing["url"] }}>URL</a></li>
 		<li>{{ listing }}</li>
-	{% endfor %}
-</ul>
+	</ul>
+{% endfor %}
 
 {% endblock %}
