@@ -82,6 +82,15 @@ def signup():
 	return redirect("/")
 		
 
+@app.route("/user/<int:user_id>")
+def user_page(user_id):
+	"""Show details about user"""
+
+	user = User.query.get(user_id)
+
+	return render_template("user.html", user=user)
+
+
 @app.route("/search")
 def search():
 	"""User inputs search specifications here"""
@@ -102,14 +111,15 @@ def get_results():
 			"keywords":keywords,
 			"min_price":float(min_price),
 			"max_price":float(max_price),
-			"category":"artandcollectibles/collectibles"
+			# "category":"artandcollectibles/collectibles"
 		}
 
-		r = requests.get("https://openapi.etsy.com/v2/listings/active", etsy_parameters).json()
+		r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
 		etsy_listings = []
 		count = 0
 
 		for listing in r["results"]:
+			# if listing["taxonomy_path"] == ["Art & Collectibles", "Collectibles"]:
 			etsy_listings.append(listing)
 			count += 1
 
