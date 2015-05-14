@@ -20,7 +20,25 @@ class User(db.Model):
 
 	def __repr__(self):
 		"""Representation when printed"""
-		return "<User user_id=%s email=%s" % (self.user_id, self.email)
+		return "<User user_id=%s email=%s>" % (self.user_id, self.email)
+
+
+class Favorite(db.Model):
+	"""Favorite listings of users."""
+
+	__tablename__ = "favorites"
+
+	favorite_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+	etsy_listing_id = db.Column(db.Integer, nullable=False)
+
+	user = db.relationship("User", backref=db.backref("favorites", order_by=favorite_id))
+
+	def __repr__(self):
+		"""Representation when printed"""
+
+		return "<favorite_id=%s user_id=%s etsy_listing_id=%s" % (self.favorite_id, self.user_id, self.etsy_listing_id)
+
 
 ###################
 # Helper functions
