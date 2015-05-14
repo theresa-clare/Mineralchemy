@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Search Results:</h1>
+
+<p>We found {{ etsy_num_results }} results:</p>
+
+<ul>
+	{% for listing in etsy_listings %}
+		<li>{{ listing }}</li>
+	{% endfor %}
+</ul>
+
+{% endblock %}

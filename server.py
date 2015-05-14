@@ -1,9 +1,13 @@
 from flask import Flask, render_template, redirect, request, flash, session
 from model import User, connect_to_db, db
+import requests
 
 
 app = Flask(__name__)
 app.secret_key = "mineral"
+
+f = open("secret.txt")
+etsy_api_key = f.read().strip()
 
 
 @app.route("/")
@@ -83,6 +87,37 @@ def search():
 	"""User inputs search specifications here"""
 	
 	return render_template("search.html")
+
+
+@app.route("/search_results", methods=['POST'])
+def get_results():
+
+	keywords = request.form["keywords"]
+	min_price = request.form["min_price"]
+	max_price = request.form["max_price"]
+
+	def search_etsy(keywords, min_price, max_price):
+		etsy_parameters = {
+			"api_key":etsy_api_key,
+			"keywords":keywords,
+			"min_price":float(min_price),
+			"max_price":float(max_price),
+			"category":"artandcollectibles/collectibles"
+		}
+
+		r = requests.get("https://openapi.etsy.com/v2/listings/active", etsy_parameters).json()
+		etsy_listings = []
+		count = 0
+
+		for listing in r["results"]:
+			etsy_listings.append(listing)
+			count += 1
+
+		return count, etsy_listings # Array of Etsy listings (listing = dictionary)
+
+	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
+
+	return render_template("search_results.html", etsy_num_results=etsy_num_results, etsy_listings=etsy_listings)
 
 
 if __name__ == '__main__':

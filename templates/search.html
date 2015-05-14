@@ -3,4 +3,16 @@
 
 <h1>Search for Minerals</h1>
 
+<form action="/search_results" method="POST">
+
+	Keywords:<input type="text" name="keywords"><br>
+
+	Price Range:<br>
+	<input type="text" name="min_price" placeholder="Low"> to 
+	<input type="text" name="max_price" placeholder="High"><br>
+
+	<input type="submit">
+
+</form>
+
 {% endblock %}
