@@ -112,6 +112,7 @@ def get_results():
 			"min_price":float(min_price),
 			"max_price":float(max_price),
 			# "category":"artandcollectibles/collectibles"
+			"limit":100,
 		}
 
 		r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
@@ -120,14 +121,25 @@ def get_results():
 
 		for listing in r["results"]:
 			# if listing["taxonomy_path"] == ["Art & Collectibles", "Collectibles"]:
-			etsy_listings.append(listing)
-			count += 1
+			if keywords in listing["title"]:
+				etsy_listings.append(listing)
+				count += 1
 
 		return count, etsy_listings # Array of Etsy listings (listing = dictionary)
 
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
 
 	return render_template("search_results.html", etsy_num_results=etsy_num_results, etsy_listings=etsy_listings)
+
+
+@app.route("/listing/<int:listing_id>")
+def listing_details(listing_id):
+	"""Show details about a listing."""
+
+	r = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "?api_key=" + etsy_api_key).json()
+	listing = r["results"][0]
+
+	return render_template("listing_details.html", title=listing["title"], description=listing["description"], price=listing["price"])
 
 
 if __name__ == '__main__':
