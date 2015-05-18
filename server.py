@@ -111,7 +111,7 @@ def get_results():
 			"keywords":keywords,
 			"min_price":float(min_price),
 			"max_price":float(max_price),
-			# "category":"artandcollectibles/collectibles"
+			# "category":"art-and-collectibles/collectibles",
 			"limit":100,
 		}
 
@@ -139,7 +139,13 @@ def listing_details(listing_id):
 	r = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "?api_key=" + etsy_api_key).json()
 	listing = r["results"][0]
 
-	return render_template("listing_details.html", title=listing["title"], description=listing["description"], price=listing["price"])
+	images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "/images?api_key=" + etsy_api_key).json()
+	image_urls = []
+	for image in images["results"]:
+		image_urls.append(image["url_fullxfull"])
+
+	return render_template("listing_details.html", title=listing["title"], description=listing["description"], 
+		price=listing["price"], image_urls=image_urls)
 
 
 if __name__ == '__main__':

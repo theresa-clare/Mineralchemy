@@ -3,6 +3,9 @@
 
 	<h1>{{ title }}</h1>
 	<p>{{ price }}</p>
+	{% for image_url in image_urls %}
+		<img src="{{ image_url }}">
+	{% endfor %}
 	<p>{{ description }}</p>
 
 {% endblock %}
