@@ -1,4 +1,5 @@
 env/
 secret.txt
+ebay-keys.txt
 *.db
 *.pyc
