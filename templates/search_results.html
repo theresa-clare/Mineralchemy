@@ -3,12 +3,22 @@
 
 <h1>Search Results:</h1>
 
-<p>We found {{ etsy_num_results }} results:</p>
+<p>We found {{ total_count }} results:</p>
 
+<p>Etsy Results:</p>
 {% for listing in etsy_listings %}
 	<ul>
 		<li>{{ listing["title"] }}</li>
 		<li><a href={{ listing["url"] }}>URL</a></li>
+		<li>{{ listing }}</li>
+	</ul>
+{% endfor %}
+
+<p>Ebay Results:</p>
+{% for listing in ebay_listings %}
+	<ul>
+		<li>{{ listing["title"][0] }}</li>
+		<li><a href={{ listing["viewItemURL"] }}>URL</a></li>
 		<li>{{ listing }}</li>
 	</ul>
 {% endfor %}
