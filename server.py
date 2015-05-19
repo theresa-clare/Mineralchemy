@@ -1,13 +1,11 @@
 from flask import Flask, render_template, redirect, request, flash, session
 from model import User, connect_to_db, db
 import requests
+from search_apis import search_etsy
 
 
 app = Flask(__name__)
 app.secret_key = "mineral"
-
-f = open("secret.txt")
-etsy_api_key = f.read().strip()
 
 
 @app.route("/")
@@ -104,28 +102,6 @@ def get_results():
 	keywords = request.form["keywords"]
 	min_price = request.form["min_price"]
 	max_price = request.form["max_price"]
-
-	def search_etsy(keywords, min_price, max_price):
-		etsy_parameters = {
-			"api_key":etsy_api_key,
-			"keywords":keywords,
-			"min_price":float(min_price),
-			"max_price":float(max_price),
-			# "category":"art-and-collectibles/collectibles",
-			"limit":100,
-		}
-
-		r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
-		etsy_listings = []
-		count = 0
-
-		for listing in r["results"]:
-			# if listing["taxonomy_path"] == ["Art & Collectibles", "Collectibles"]:
-			if keywords in listing["title"]:
-				etsy_listings.append(listing)
-				count += 1
-
-		return count, etsy_listings # Array of Etsy listings (listing = dictionary)
 
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
 
