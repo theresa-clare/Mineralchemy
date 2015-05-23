@@ -34,6 +34,7 @@ def search_etsy(keywords, min_price, max_price):
 			etsy_listings["etsy"].append(
 				{
 				"listing_id": listing["listing_id"],
+				"listing_origin": "etsy",
 				"title": listing["title"],
 				"price": listing["price"], 
 				"description": listing["description"],
@@ -74,6 +75,7 @@ def search_ebay(keywords, min_price, max_price, all_listings):
 	for listing in ebay_listings:
 		new_listing = {
 			"listing_id": listing["itemId"][0],
+			"listing_origin": "ebay",
 			"title": listing["title"][0],
 			"price": listing["sellingStatus"][0]["currentPrice"][0]["__value__"],
 			"description": None, # Double check if need to make a new API call
