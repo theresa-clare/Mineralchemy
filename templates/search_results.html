@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+
 <h1>Search Results:</h1>
 
-<p>We found {{ total_count }} results:</p>
+<h2>We found {{ total_count }} results:</h2>
 
-<p>Etsy Results:</p>
-{% for listing in etsy_listings %}
-	<ul>
-		<li>{{ listing["title"] }}</li>
-		<li><a href={{ listing["url"] }}>URL</a></li>
-		<li>{{ listing }}</li>
-	</ul>
-{% endfor %}
-
-<p>Ebay Results:</p>
-{% for listing in ebay_listings %}
-	<ul>
-		<li>{{ listing["title"][0] }}</li>
-		<li><a href={{ listing["viewItemURL"] }}>URL</a></li>
-		<li>{{ listing }}</li>
-	</ul>
+<h2>Results:</h2>
+{% for key in all_listings.keys() %}
+	{% for listing in all_listings[key] %}
+		<ul>
+			<li>{{ listing["title"] }}</li>
+			<li>{{ listing["price"] }}</li>
+			<li><a href={{ listing["url"] }}>Listing URL</a></li>
+			{% if listing["description"] != None %}
+				<li>{{ listing["description"] }}</li>
+			{% endif %}
+			<li>
+				{% for image_url in listing["image_urls"] %}
+					<img src="{{ image_url }}">
+				{% endfor %}
+			</li>
+		</ul>
+	{% endfor %}
 {% endfor %}
 
 {% endblock %}

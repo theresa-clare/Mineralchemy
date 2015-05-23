@@ -18,19 +18,36 @@ def search_etsy(keywords, min_price, max_price):
 	}
 
 	r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
-	etsy_listings = []
+	
+	# Create dictionary with keys as API name
+	# Value of key is an array of a dictionary with listing information
+	etsy_listings = {}
+	etsy_listings["etsy"] = []
 	count = 0
 
 	for listing in r["results"]:
 		# if listing["taxonomy_path"] == ["Art & Collectibles", "Collectibles"]:
-		if keywords in listing["title"]:
-			etsy_listings.append(listing)
+		if keywords in listing["title"]: # Filters
+			images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing["listing_id"]) + "/images?api_key=" + etsy_api_key).json()
+			image_urls = [image["url_fullxfull"] for image in images["results"]]
+			
+			etsy_listings["etsy"].append(
+				{
+				"listing_id": listing["listing_id"],
+				"title": listing["title"],
+				"price": listing["price"], 
+				"description": listing["description"],
+				"url": listing["url"],
+				"image_urls": image_urls
+				}
+			)
 			count += 1
 
-	return count, etsy_listings # Array of Etsy listings (listing = dictionary)
+	return count, etsy_listings 
 
 
-def search_ebay(keywords, min_price, max_price):
+def search_ebay(keywords, min_price, max_price, all_listings):
+
 	ebay_parameters = {
 		"OPERATION-NAME":"findItemsAdvanced",
 		"SERVICE-VERSION":"1.13.0",
@@ -49,7 +66,23 @@ def search_ebay(keywords, min_price, max_price):
 	}
 
 	r = requests.get("http://svcs.ebay.com/services/search/FindingService/v1", params=ebay_parameters).json()
-	count = r["findItemsAdvancedResponse"][0]["searchResult"][0]["@count"]
 	ebay_listings = r["findItemsAdvancedResponse"][0]["searchResult"][0]["item"]
 
-	return count, ebay_listings #Array of Ebay listings (listing = dictionary)
+	all_listings["ebay"] = []
+	count = r["findItemsAdvancedResponse"][0]["searchResult"][0]["@count"]
+
+	for listing in ebay_listings:
+		new_listing = {
+			"listing_id": listing["itemId"][0],
+			"title": listing["title"][0],
+			"price": listing["sellingStatus"][0]["currentPrice"][0]["__value__"],
+			"description": None, # Double check if need to make a new API call
+			"url": listing["viewItemURL"]
+			}
+		try:
+			new_listing["image_urls"] = listing["galleryPlusPictureURL"]
+		except:
+			new_listing["image_urls"] = []
+		all_listings["ebay"].append(new_listing)
+
+	return count, all_listings # Contains Etsy and Ebay listings

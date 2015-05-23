@@ -104,27 +104,22 @@ def get_results():
 	max_price = request.form["max_price"]
 
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
-	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
+	ebay_num_results, all_listings = search_ebay(keywords, min_price, max_price, etsy_listings)
 
 	total_count = etsy_num_results + int(ebay_num_results)
 
-	return render_template("search_results.html", total_count=total_count, etsy_listings=etsy_listings, ebay_listings=ebay_listings)
+	return render_template("search_results.html", total_count=total_count, all_listings=all_listings)
 
 
-@app.route("/listing/<int:listing_id>")
-def listing_details(listing_id):
-	"""Show details about a listing."""
+# @app.route("/listing/<int:listing_id>")
+# def listing_details(listing_id):
+# 	"""Show details about a listing."""
 
-	r = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "?api_key=" + etsy_api_key).json()
-	listing = r["results"][0]
+# 	r = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "?api_key=" + etsy_api_key).json()
+# 	listing = r["results"][0]
 
-	images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "/images?api_key=" + etsy_api_key).json()
-	image_urls = []
-	for image in images["results"]:
-		image_urls.append(image["url_fullxfull"])
-
-	return render_template("listing_details.html", title=listing["title"], description=listing["description"], 
-		price=listing["price"], image_urls=image_urls)
+# 	return render_template("listing.html", title=listing["title"], description=listing["description"], 
+# 		price=listing["price"], image_urls=image_urls)
 
 
 if __name__ == '__main__':
