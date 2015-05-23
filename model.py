@@ -30,14 +30,15 @@ class Favorite(db.Model):
 
 	favorite_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-	etsy_listing_id = db.Column(db.Integer, nullable=False)
+	listing_origin = db.Column(db.String(64), nullable=False)
+	listing_id = db.Column(db.Integer, nullable=False)
 
 	user = db.relationship("User", backref=db.backref("favorites", order_by=favorite_id))
 
 	def __repr__(self):
 		"""Representation when printed"""
 
-		return "<favorite_id=%s user_id=%s etsy_listing_id=%s" % (self.favorite_id, self.user_id, self.etsy_listing_id)
+		return "<favorite_id=%s user_id=%s listing_id=%s" % (self.favorite_id, self.user_id, self.listing_id)
 
 
 ###################
