@@ -23,7 +23,7 @@ def search_etsy(keywords, min_price, max_price):
 	# Value of key is an array of a dictionary with listing information
 	etsy_listings = {}
 	etsy_listings["etsy"] = []
-	count = r["count"]
+	count = 0
 
 	for listing in r["results"]:
 		# if listing["taxonomy_path"] == ["Art & Collectibles", "Collectibles"]:
@@ -42,6 +42,8 @@ def search_etsy(keywords, min_price, max_price):
 				"image_urls": image_urls
 				}
 			)
+
+			count += 1
 
 	return count, etsy_listings 
 
