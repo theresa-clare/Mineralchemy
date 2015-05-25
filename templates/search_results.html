@@ -1,29 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-
 <h1>Search Results:</h1>
 
 <h2>We found {{ total_count }} results:</h2>
 
 <h2>Results:</h2>
+
 {% for key in all_listings.keys() %}
+	<h3>{{ key }}</h3>
 	{% for listing in all_listings[key] %}
 		<ul>
 			<li>{{ listing["title"] }}</li>
 			<li>{{ listing["price"] }}</li>
 			<li><a href={{ listing["url"] }}>Listing URL</a></li>
+
 			{% if listing["description"] != None %}
 				<li>{{ listing["description"] }}</li>
 			{% endif %}
+
 			<li>
 				{% for image_url in listing["image_urls"] %}
 					<img src="{{ image_url }}">
 				{% endfor %}
 			</li>
+
+			<li>
+				<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
+			</li>
 		</ul>
 	{% endfor %}
 {% endfor %}
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<script>
+	function addToFavorite(evt){
+		if ({{ user_id }} == 0){
+			// Add listing_id, user_id, and listing_origin to Favorite
+			alert("Please log in first!");
+		} else {
+			origin_id_string = $(".favorite").attr("value");
+			origin_id_array = origin_id_string.split(",");
+			var listing_origin = origin_id_array[0];
+			var listing_id = parseInt(origin_id_array[1], 10);
+
+			$.ajax(
+				{
+					type: 'GET',
+					url: '/add_to_favorites',
+					data: {
+						"user_id": {{ user_id }},
+						"listing_origin": listing_origin,
+						"listing_id": listing_id
+					},
+					dataType: "text",
+					success: function(response){
+						alert(response);
+					}
+				}
+			);
+
+		};
+	};
+
+	$('.favorite').on('click', addToFavorite);
+</script>
 
 {% endblock %}

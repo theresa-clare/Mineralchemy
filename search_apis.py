@@ -79,7 +79,7 @@ def search_ebay(keywords, min_price, max_price, all_listings):
 			"title": listing["title"][0],
 			"price": listing["sellingStatus"][0]["currentPrice"][0]["__value__"],
 			"description": None, # Double check if need to make a new API call
-			"url": listing["viewItemURL"]
+			"url": listing["viewItemURL"][0]
 			}
 		try:
 			new_listing["image_urls"] = listing["galleryPlusPictureURL"]

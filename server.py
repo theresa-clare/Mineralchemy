@@ -2,11 +2,14 @@ from flask import Flask, render_template, redirect, request, flash, session
 from model import User, connect_to_db, db
 import requests
 from search_apis import search_etsy, search_ebay
+import sqlite3
 
 
 app = Flask(__name__)
 app.secret_key = "mineral"
 
+connection = sqlite3.connect('mineralchemy.db', check_same_thread=False)
+cursor = connection.cursor()
 
 @app.route("/")
 def index():
@@ -108,8 +111,25 @@ def get_results():
 
 	total_count = etsy_num_results + int(ebay_num_results)
 
-	return render_template("search_results.html", total_count=total_count, all_listings=all_listings)
+	user_id = session.get("user_id", 0)
 
+	return render_template("search_results.html", total_count=total_count, all_listings=all_listings, user_id=user_id)
+
+
+@app.route("/add_to_favorites", methods=['GET'])
+def add_to_favorites():
+	
+	user_id = request.args.get('user_id').encode(encoding='UTF-8',errors='strict')
+	listing_origin = request.args.get('listing_origin').encode(encoding='UTF-8',errors='strict')
+	listing_id = request.args.get('listing_id').encode(encoding='UTF-8',errors='strict')
+
+	sql_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
+	cursor.execute(sql_query, (user_id, listing_origin, listing_id))
+	connection.commit()
+
+	success_string = "Successfully added to your favorites!"
+
+	return success_string
 
 # @app.route("/listing/<int:listing_id>")
 # def listing_details(listing_id):
