@@ -11,6 +11,12 @@ app.secret_key = "mineral"
 connection = sqlite3.connect('mineralchemy.db', check_same_thread=False)
 cursor = connection.cursor()
 
+f = open("secret.txt")
+keys = f.read().strip().split()
+etsy_api_key = keys[0]
+ebay_appID = keys[1]
+
+
 @app.route("/")
 def index():
 	"""This is the homepage of Mineralchemy"""
@@ -83,13 +89,50 @@ def signup():
 	return redirect("/")
 		
 
-@app.route("/user/<int:user_id>")
+@app.route("/user/<int:user_id>", methods=['GET'])
 def user_page(user_id):
 	"""Show details about user"""
 
 	user = User.query.get(user_id)
 
-	return render_template("user.html", user=user)
+	sql_query = "SELECT listing_origin, listing_id FROM favorites WHERE user_id = ?"
+	cursor.execute(sql_query,(user.user_id,))
+	results = cursor.fetchall()
+
+	etsy_listings = []
+	ebay_listings = []
+
+	for result in results:
+		if result[0] == "etsy":
+			etsy_api_url = "https://openapi.etsy.com/v2/listings/%s?api_key=%s" % (result[1], etsy_api_key)
+			r = requests.get(etsy_api_url).json()
+			etsy_listings.append(
+				{
+				"title": r["results"][0]["title"],
+				"price": r["results"][0]["price"],
+				"url": r["results"][0]["url"]
+				}
+			)
+		else:
+			ebay_parameters = {
+				"callname":"GetSingleItem",
+				"responseencoding":"JSON",
+				"appid":ebay_appID,
+				"siteid":0,
+				"version":515,
+				"ItemID":result[1],
+				"IncludeSelector":"Description,ItemSpecifics"
+			}
+			r = requests.get("http://open.api.ebay.com/shopping", params=ebay_parameters).json()
+			ebay_listings.append(
+				{
+				"title": r["Item"]["Title"],
+				"price": r["Item"]["ConvertedCurrentPrice"]["Value"],
+				"url": r["Item"]["GalleryURL"]
+				}
+			)
+
+	return render_template("user.html", user=user, etsy_listings=etsy_listings, ebay_listings=ebay_listings)
 
 
 @app.route("/search")

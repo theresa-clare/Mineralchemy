@@ -3,4 +3,24 @@
 
 	<h1>This is the details page of {{ user.email }}</h1>
 
+	<h2>Favorite Listings:</h2>
+
+	{% for etsy_result in etsy_listings %}
+	<ul>
+		<li>{{ etsy_result["title"] }}</li>
+		<li>{{ etsy_result["price"] }}</li>
+		<li>{{ etsy_result["url"] }}</li>
+		<li>{{ etsy_result["description"] }}</li>
+	</ul>
+	{% endfor %}
+
+	{% for ebay_result in ebay_listings %}
+	<ul>
+		<li>{{ ebay_result["title"] }}</li>
+		<li>{{ ebay_result["price"] }}</li>
+		<li>{{ ebay_result["url"] }}</li>
+		<li>{{ ebay_result["description"] }}</li>
+	</ul>
+	{% endfor %}
+
 {% endblock %}

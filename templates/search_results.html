@@ -26,7 +26,8 @@
 			</li>
 
 			<li>
-				<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
+				<button type="button" class="favorite" id="{{ listing["listing_id"] }}button" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
+				<p id="{{ listing["listing_id"] }}"></p>
 			</li>
 		</ul>
 	{% endfor %}
@@ -45,6 +46,9 @@
 			var listing_origin = origin_id_array[0];
 			var listing_id = parseInt(origin_id_array[1], 10);
 
+			// var paragraph_id = "#" + listing_id;
+			// var button_id = paragraph_id + "button";
+
 			$.ajax(
 				{
 					type: 'GET',
@@ -57,6 +61,8 @@
 					dataType: "text",
 					success: function(response){
 						alert(response);
+						// $(button_id).hide();
+						// $(paragraph_id).html(response);
 					}
 				}
 			);
