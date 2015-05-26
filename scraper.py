@@ -24,8 +24,12 @@ def scrape_minfind(keywords):
 			unicode_description = main_content.find("div", {"class":"fptext"}).contents[2]
 			listing_dict["description"] = unicode_description.encode(encoding='UTF-8',errors='strict').strip()
 
+			image_urls = []
+			links = main_content.find("div", {"class":"allimages"}).findAll("a")
+			for a in links:
+				image_urls.append("http://www.minfind.com" + a['href'])
+			listing_dict["image_urls"] = image_urls
+
 			minfind_listings.append(listing_dict)
 
-	print minfind_listings
-
-scrape_minfind("pink tourmaline")
+	return minfind_listings
