@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, request, flash, session
 from model import User, connect_to_db, db
-import requests
 from search_apis import search_etsy, search_ebay
+from scraper import scrape_minfind
+import requests
 import sqlite3
 
 
