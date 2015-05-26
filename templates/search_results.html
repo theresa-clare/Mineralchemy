@@ -7,9 +7,12 @@
 
 <h2>Results:</h2>
 
+<!-- {% set count = 0 %} -->
 {% for key in all_listings.keys() %}
 	<h3>{{ key }}</h3>
+
 	{% for listing in all_listings[key] %}
+	<!-- {% set count = count + 1 %} -->
 		<ul>
 			<li>{{ listing["title"] }}</li>
 			<li>{{ listing["price"] }}</li>
@@ -26,11 +29,14 @@
 			</li>
 
 			<li>
-				<button type="button" class="favorite" id="{{ listing["listing_id"] }}button" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
-				<p id="{{ listing["listing_id"] }}"></p>
+<!-- 				<button type="button" class="favorite" id="{{count}}" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
+				<p id="{{ listing["listing_id"] }}"></p> -->
+				<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
+				<!-- <p id="{{ listing["listing_id"] }}"></p> -->
 			</li>
 		</ul>
 	{% endfor %}
+
 {% endfor %}
 
 <script src="https://code.jquery.com/jquery.js"></script>
@@ -69,6 +75,7 @@
 		};
 	};
 
+	// $('#{{ count }}').on('click', addToFavorite);
 	$('.favorite').on('click', addToFavorite);
 </script>
 
