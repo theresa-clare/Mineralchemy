@@ -147,13 +147,21 @@ def search():
 def get_results():
 
 	keywords = request.form["keywords"]
-	min_price = request.form["min_price"]
-	max_price = request.form["max_price"]
+	min_price = float(request.form["min_price"])
+	max_price = float(request.form["max_price"])
 
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
-	ebay_num_results, all_listings = search_ebay(keywords, min_price, max_price, etsy_listings)
+	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
+	# minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
 
 	total_count = etsy_num_results + int(ebay_num_results)
+	# total_count = etsy_num_results + int(ebay_num_results) + minfind_num_results
+
+	all_listings = {
+		"etsy": etsy_listings,
+		"ebay": ebay_listings,
+		# "minfind": minfind_listings
+	}
 
 	user_id = session.get("user_id", 0)
 

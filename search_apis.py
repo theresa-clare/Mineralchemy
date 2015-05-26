@@ -19,10 +19,7 @@ def search_etsy(keywords, min_price, max_price):
 
 	r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
 	
-	# Create dictionary with keys as API name
-	# Value of key is an array of a dictionary with listing information
-	etsy_listings = {}
-	etsy_listings["etsy"] = []
+	etsy_listings = []
 	count = 0
 
 	for listing in r["results"]:
@@ -31,7 +28,7 @@ def search_etsy(keywords, min_price, max_price):
 			images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing["listing_id"]) + "/images?api_key=" + etsy_api_key).json()
 			image_urls = [image["url_fullxfull"] for image in images["results"]]
 			
-			etsy_listings["etsy"].append(
+			etsy_listings.append(
 				{
 				"listing_id": listing["listing_id"],
 				"listing_origin": "etsy",
@@ -48,7 +45,7 @@ def search_etsy(keywords, min_price, max_price):
 	return count, etsy_listings 
 
 
-def search_ebay(keywords, min_price, max_price, all_listings):
+def search_ebay(keywords, min_price, max_price):
 
 	ebay_parameters = {
 		"OPERATION-NAME":"findItemsAdvanced",
@@ -68,12 +65,12 @@ def search_ebay(keywords, min_price, max_price, all_listings):
 	}
 
 	r = requests.get("http://svcs.ebay.com/services/search/FindingService/v1", params=ebay_parameters).json()
-	ebay_listings = r["findItemsAdvancedResponse"][0]["searchResult"][0]["item"]
+	listings = r["findItemsAdvancedResponse"][0]["searchResult"][0]["item"]
 
-	all_listings["ebay"] = []
+	ebay_listings = []
 	count = r["findItemsAdvancedResponse"][0]["searchResult"][0]["@count"]
 
-	for listing in ebay_listings:
+	for listing in listings:
 		new_listing = {
 			"listing_id": listing["itemId"][0],
 			"listing_origin": "ebay",
@@ -86,6 +83,6 @@ def search_ebay(keywords, min_price, max_price, all_listings):
 			new_listing["image_urls"] = listing["galleryPlusPictureURL"]
 		except:
 			new_listing["image_urls"] = []
-		all_listings["ebay"].append(new_listing)
+		ebay_listings.append(new_listing)
 
-	return count, all_listings # Contains Etsy and Ebay listings
+	return count, ebay_listings
