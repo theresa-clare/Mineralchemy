@@ -7,12 +7,10 @@
 
 <h2>Results:</h2>
 
-<!-- {% set count = 0 %} -->
 {% for key in all_listings.keys() %}
 	<h3>{{ key }}</h3>
 
 	{% for listing in all_listings[key] %}
-	<!-- {% set count = count + 1 %} -->
 		<ul>
 			<li>{{ listing["title"] }}</li>
 			<li>{{ listing["price"] }}</li>
@@ -29,10 +27,7 @@
 			</li>
 
 			<li>
-<!-- 				<button type="button" class="favorite" id="{{count}}" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
-				<p id="{{ listing["listing_id"] }}"></p> -->
 				<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
-				<!-- <p id="{{ listing["listing_id"] }}"></p> -->
 			</li>
 		</ul>
 	{% endfor %}
@@ -46,13 +41,10 @@
 		if ({{ user_id }} == 0){
 			alert("Please log in first!");
 		} else {
-			origin_id_string = $(".favorite").attr("value");
+			origin_id_string = $(evt.currentTarget).attr("value");
 			origin_id_array = origin_id_string.split(",");
 			var listing_origin = origin_id_array[0];
 			var listing_id = parseInt(origin_id_array[1], 10);
-
-			// var paragraph_id = "#" + listing_id;
-			// var button_id = paragraph_id + "button";
 
 			$.ajax(
 				{
@@ -66,8 +58,6 @@
 					dataType: "text",
 					success: function(response){
 						alert(response);
-						// $(button_id).hide();
-						// $(paragraph_id).html(response);
 					}
 				}
 			);
@@ -75,7 +65,6 @@
 		};
 	};
 
-	// $('#{{ count }}').on('click', addToFavorite);
 	$('.favorite').on('click', addToFavorite);
 </script>
 
