@@ -3,6 +3,9 @@ from unicodedata import normalize
 import urllib
 
 def scrape_minfind(keywords, min_price, max_price):
+	"""Scrape Minfind for listings within price range and return number of listings and array of dictionaries."""
+
+	# Scrape initial search page with only keywords
 	url = "http://www.minfind.com/search.php?" + urllib.urlencode({"qs":keywords})
 	html = urllib.urlopen(url).read()
 	soup = BeautifulSoup(html, "lxml")
@@ -14,6 +17,7 @@ def scrape_minfind(keywords, min_price, max_price):
 	for listing in listings:
 		listing_price = float(listing.find("div", {"class":"minboxprice"}).string[1:])
 
+		# Filter the listings within price range
 		if listing_price > min_price and listing_price < max_price:
 			listing_dict = {
 				"listing_id": int(filter(str.isdigit, listing.a['href'])),
@@ -23,6 +27,7 @@ def scrape_minfind(keywords, min_price, max_price):
 				"price": listing_price
 			}
 
+			# Scrape individual listing details page to access description and all images
 			details_html = urllib.urlopen(listing_dict["url"]).read()
 			details_soup = BeautifulSoup(details_html, "lxml")
 			main_content = details_soup.find("div", {"id":"maincontent"})

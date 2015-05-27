@@ -20,27 +20,28 @@ ebay_appID = keys[1]
 
 @app.route("/")
 def index():
-	"""This is the homepage of Mineralchemy"""
+	"""Homepage of Mineralchemy."""
 
 	return render_template("homepage.html")
 
 
 @app.route("/login", methods=['GET'])
 def show_login_form():
-	"""User login"""
+	"""User login."""
 
 	return render_template("login_form.html")
 
 
 @app.route("/login", methods=['POST'])
 def login():
-	"""Log in user by checking to see if user is in user database and putting user in session."""
+	"""Log in user and puts user in session."""
 
 	email = request.form["email"]
 	password = request.form["password"]
 
 	user = User.query.filter_by(email=email).first()
 
+	# Check to see if user is registered in database
 	if not user:
 		flash("User not in database")
 		return redirect("/login")
@@ -145,6 +146,7 @@ def search():
 
 @app.route("/search_results", methods=['POST'])
 def get_results():
+	"""Aggregates listings from Etsy, eBay, and Minfind. Passes results to search result page."""
 
 	keywords = request.form["keywords"]
 	min_price = float(request.form["min_price"])
@@ -156,10 +158,11 @@ def get_results():
 
 	total_count = etsy_num_results + int(ebay_num_results) + minfind_num_results
 
+	# Dictionary with origin as keys and list of dictionaries (listings) as values
 	all_listings = {
-		"etsy": etsy_listings,
-		"ebay": ebay_listings,
-		"minfind": minfind_listings
+		"Etsy": etsy_listings,
+		"eBay": ebay_listings,
+		"Minfind": minfind_listings
 	}
 
 	user_id = session.get("user_id", 0)
@@ -169,16 +172,18 @@ def get_results():
 
 @app.route("/add_to_favorites", methods=['GET'])
 def add_to_favorites():
+	"""Add listing to favorites table in database."""
 	
 	user_id = request.args.get('user_id').encode(encoding='UTF-8',errors='strict')
 	listing_origin = request.args.get('listing_origin').encode(encoding='UTF-8',errors='strict')
 	listing_id = request.args.get('listing_id').encode(encoding='UTF-8',errors='strict')
 
+	# Check to see if listing is already in favorites table for that user
 	old_favorite_query = "SELECT * FROM favorites WHERE user_id = ? AND listing_id = ?"
 	cursor.execute(old_favorite_query, (user_id, listing_id))
 	old_favorite_result = cursor.fetchall()
 
-	if old_favorite_result == []:
+	if old_favorite_result != []:
 		return "You have already added this to your favorites!"
 	else:
 		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
@@ -186,20 +191,9 @@ def add_to_favorites():
 		connection.commit()
 		return "Successfully added to your favorites!"
 
-# @app.route("/listing/<int:listing_id>")
-# def listing_details(listing_id):
-# 	"""Show details about a listing."""
-
-# 	r = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing_id) + "?api_key=" + etsy_api_key).json()
-# 	listing = r["results"][0]
-
-# 	return render_template("listing.html", title=listing["title"], description=listing["description"], 
-# 		price=listing["price"], image_urls=image_urls)
 
 
 if __name__ == '__main__':
 	app.debug = True
-
 	connect_to_db(app)
-
 	app.run()

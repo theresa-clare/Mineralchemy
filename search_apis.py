@@ -8,6 +8,14 @@ ebay_appID = keys[1]
 
 
 def search_etsy(keywords, min_price, max_price):
+	"""Search Etsy for listings within a price range.
+
+	Each listing is represented by a dictionary. The keys in the dictionary correspond with 
+	the listing id, listing origin, title, price, description, URL, and image URLs of the listing.
+
+	Returns number of listings and a list of dictionaries.
+	"""
+
 	etsy_parameters = {
 		"api_key":etsy_api_key,
 		"keywords":keywords,
@@ -46,6 +54,13 @@ def search_etsy(keywords, min_price, max_price):
 
 
 def search_ebay(keywords, min_price, max_price):
+	"""Search eBay for listings within a price range.
+
+	Each listing is represented by a dictionary. The keys in the dictionary correspond with 
+	the listing id, listing origin, title, price, description, URL, and image URLs of the listing.
+
+	Returns number of listings and a list of dictionaries.
+	"""
 
 	ebay_parameters = {
 		"OPERATION-NAME":"findItemsAdvanced",
