@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, request, flash, session
 from model import User, connect_to_db, db
 from search_apis import search_etsy, search_ebay
 from scraper import scrape_minfind
+from bs4 import BeautifulSoup
+import urllib
 import requests
 import sqlite3
 
@@ -103,7 +105,9 @@ def user_page(user_id):
 
 	etsy_listings = []
 	ebay_listings = []
+	minfind_listings = []
 
+	# Make API call or scrape from website using listing origin and id
 	for result in results:
 		if result[0] == "etsy":
 			etsy_api_url = "https://openapi.etsy.com/v2/listings/%s?api_key=%s" % (result[1], etsy_api_key)
@@ -115,7 +119,7 @@ def user_page(user_id):
 				"url": r["results"][0]["url"]
 				}
 			)
-		else:
+		elif result[0] == "ebay":
 			ebay_parameters = {
 				"callname":"GetSingleItem",
 				"responseencoding":"JSON",
@@ -133,8 +137,23 @@ def user_page(user_id):
 				"url": r["Item"]["GalleryURL"]
 				}
 			)
+		else:
+			minfind_url = "http://www.minfind.com/mineral-%s.html" % str(result[1])
+			html = urllib.urlopen(minfind_url).read()
+			soup = BeautifulSoup(html, "lxml")
 
-	return render_template("user.html", user=user, etsy_listings=etsy_listings, ebay_listings=ebay_listings)
+			main_content = soup.find("div", {"id":"maincontent"})
+
+			minfind_listings.append(
+				{
+				"title": main_content.h1.string.encode(encoding='UTF-8',errors='strict'),
+				"price": main_content.find("div",{"class":"price"}).string[1:],
+				"url": minfind_url
+				}
+			)
+
+	return render_template("user.html", user=user, etsy_listings=etsy_listings, 
+							ebay_listings=ebay_listings, minfind_listings=minfind_listings)
 
 
 @app.route("/search")
