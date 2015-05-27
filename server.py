@@ -174,13 +174,17 @@ def add_to_favorites():
 	listing_origin = request.args.get('listing_origin').encode(encoding='UTF-8',errors='strict')
 	listing_id = request.args.get('listing_id').encode(encoding='UTF-8',errors='strict')
 
-	sql_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
-	cursor.execute(sql_query, (user_id, listing_origin, listing_id))
-	connection.commit()
+	old_favorite_query = "SELECT * FROM favorites WHERE user_id = ? AND listing_id = ?"
+	cursor.execute(old_favorite_query, (user_id, listing_id))
+	old_favorite_result = cursor.fetchall()
 
-	success_string = "Successfully added to your favorites!"
-
-	return success_string
+	if old_favorite_result == []:
+		return "You have already added this to your favorites!"
+	else:
+		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
+		cursor.execute(new_favorite_query, (user_id, listing_origin, listing_id))
+		connection.commit()
+		return "Successfully added to your favorites!"
 
 # @app.route("/listing/<int:listing_id>")
 # def listing_details(listing_id):
