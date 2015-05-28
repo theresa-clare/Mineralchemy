@@ -10,27 +10,32 @@
 {% for key in all_listings.keys() %}
 	<h3>{{ key }}</h3>
 
-	{% for listing in all_listings[key] %}
-		<ul>
-			<li>{{ listing["title"] }}</li>
-			<li>{{ listing["price"] }}</li>
-			<li><a href={{ listing["url"] }}>Listing URL</a></li>
+	{% if all_listings[key] != [] %}
+		{% for listing in all_listings[key] %}
+			<ul>
+				<li>{{ listing["title"] }}</li>
+				<li>{{ listing["price"] }}</li>
+				<li><a href={{ listing["url"] }}>Listing URL</a></li>
 
-			{% if listing["description"] != None %}
-				<li>{{ listing["description"] }}</li>
-			{% endif %}
+				{% if listing["description"] != None %}
+					<li>{{ listing["description"] }}</li>
+				{% endif %}
 
-			<li>
-				{% for image_url in listing["image_urls"] %}
-					<img src="{{ image_url }}">
-				{% endfor %}
-			</li>
+				<li>
+					{% for image_url in listing["image_urls"] %}
+						<img src="{{ image_url }}">
+					{% endfor %}
+				</li>
 
-			<li>
-				<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
-			</li>
-		</ul>
-	{% endfor %}
+				<li>
+					<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
+				</li>
+			</ul>
+		{% endfor %}
+		
+	{% else %}
+		<p> No results were found in {{ key }}.</p>
+	{% endif %}
 
 {% endfor %}
 
