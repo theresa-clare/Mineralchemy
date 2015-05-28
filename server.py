@@ -84,13 +84,20 @@ def signup():
 	firstname = request.form["firstname"]
 	lastname = request.form["lastname"]
 
-	new_user = User(email=email, password=password, firstname=firstname, lastname=lastname)
+	# Check to see if user is already in database
+	user = User.query.filter_by(email=email).first()
 
-	db.session.add(new_user)
-	db.session.commit()
+	if user:
+		flash("You already registered! Please sign in!")
+		return redirect("/login")
+	else:
+		new_user = User(email=email, password=password, firstname=firstname, lastname=lastname)
 
-	flash("%s is now registered" % email)
-	return redirect("/")
+		db.session.add(new_user)
+		db.session.commit()
+
+		flash("%s is now registered" % email)
+		return redirect("/")
 		
 
 @app.route("/user/<int:user_id>", methods=['GET'])
