@@ -98,11 +98,66 @@ def signup():
 
 		flash("%s is now registered" % email)
 		return redirect("/")
-		
+
+
+@app.route("/search")
+def search():
+	"""User inputs search specifications here."""
+	
+	return render_template("search.html")
+
+
+@app.route("/search_results", methods=['POST'])
+def get_results():
+	"""Aggregates listings from Etsy, eBay, and Minfind. Passes results to search result page."""
+
+	keywords = request.form["keywords"]
+	min_price = float(request.form["min_price"])
+	max_price = float(request.form["max_price"])
+
+	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
+	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
+	minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
+
+	total_count = etsy_num_results + int(ebay_num_results) + minfind_num_results
+
+	# Dictionary with origin as keys and list of dictionaries (listings) as values
+	all_listings = {
+		"Etsy": etsy_listings,
+		"eBay": ebay_listings,
+		"Minfind": minfind_listings
+	}
+
+	user_id = session.get("user_id", 0)
+
+	return render_template("search_results.html", total_count=total_count, all_listings=all_listings, user_id=user_id)
+
+
+@app.route("/add_to_favorites", methods=['GET'])
+def add_to_favorites():
+	"""Add listing to favorites table in database."""
+	
+	user_id = request.args.get('user_id').encode(encoding='UTF-8',errors='strict')
+	listing_origin = request.args.get('listing_origin').encode(encoding='UTF-8',errors='strict')
+	listing_id = request.args.get('listing_id').encode(encoding='UTF-8',errors='strict')
+
+	# Check to see if listing is already in favorites table for that user
+	old_favorite_query = "SELECT * FROM favorites WHERE user_id = ? AND listing_id = ?"
+	cursor.execute(old_favorite_query, (user_id, listing_id))
+	old_favorite_result = cursor.fetchall()
+
+	if old_favorite_result != []:
+		return "You have already added this to your favorites!"
+	else:
+		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
+		cursor.execute(new_favorite_query, (user_id, listing_origin, listing_id))
+		connection.commit()
+		return "Successfully added to your favorites!"
+
 
 @app.route("/user/<int:user_id>", methods=['GET'])
 def user_page(user_id):
-	"""Show details about user"""
+	"""Show details and favorite listings of user."""
 
 	user = User.query.get(user_id)
 
@@ -161,62 +216,6 @@ def user_page(user_id):
 
 	return render_template("user.html", user=user, etsy_listings=etsy_listings, 
 							ebay_listings=ebay_listings, minfind_listings=minfind_listings)
-
-
-@app.route("/search")
-def search():
-	"""User inputs search specifications here"""
-	
-	return render_template("search.html")
-
-
-@app.route("/search_results", methods=['POST'])
-def get_results():
-	"""Aggregates listings from Etsy, eBay, and Minfind. Passes results to search result page."""
-
-	keywords = request.form["keywords"]
-	min_price = float(request.form["min_price"])
-	max_price = float(request.form["max_price"])
-
-	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
-	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
-	minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
-
-	total_count = etsy_num_results + int(ebay_num_results) + minfind_num_results
-
-	# Dictionary with origin as keys and list of dictionaries (listings) as values
-	all_listings = {
-		"Etsy": etsy_listings,
-		"eBay": ebay_listings,
-		"Minfind": minfind_listings
-	}
-
-	user_id = session.get("user_id", 0)
-
-	return render_template("search_results.html", total_count=total_count, all_listings=all_listings, user_id=user_id)
-
-
-@app.route("/add_to_favorites", methods=['GET'])
-def add_to_favorites():
-	"""Add listing to favorites table in database."""
-	
-	user_id = request.args.get('user_id').encode(encoding='UTF-8',errors='strict')
-	listing_origin = request.args.get('listing_origin').encode(encoding='UTF-8',errors='strict')
-	listing_id = request.args.get('listing_id').encode(encoding='UTF-8',errors='strict')
-
-	# Check to see if listing is already in favorites table for that user
-	old_favorite_query = "SELECT * FROM favorites WHERE user_id = ? AND listing_id = ?"
-	cursor.execute(old_favorite_query, (user_id, listing_id))
-	old_favorite_result = cursor.fetchall()
-
-	if old_favorite_result != []:
-		return "You have already added this to your favorites!"
-	else:
-		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
-		cursor.execute(new_favorite_query, (user_id, listing_origin, listing_id))
-		connection.commit()
-		return "Successfully added to your favorites!"
-
 
 
 if __name__ == '__main__':

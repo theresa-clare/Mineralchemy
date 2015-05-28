@@ -22,17 +22,23 @@ def search_etsy(keywords, min_price, max_price):
 		"min_price":float(min_price),
 		"max_price":float(max_price),
 		"category":"art_and_collectibles/Collectibles",
-		"limit":100,
+		"limit":1000,
 	}
 
 	r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
 	
 	etsy_listings = []
 	count = 0
+	exclude = ['Jewelry', 'necklace', 'ring', 'bracelet', 'pendant', 'bead']
 
 	for listing in r["results"]:
-		# if listing["taxonomy_path"] == ["Art & Collectibles", "Collectibles"]:
-		if keywords in listing["title"]: # Filters
+		# Filter for listings that are not related to jewelry
+		# if keywords in listing["title"]:
+		if all(x in listing["tags"] for x in keywords.split()) and not \
+			(
+				any(x in listing["tags"] for x in exclude) or
+				any(x.title() in listing["tags"] for x in exclude)
+			):
 			images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing["listing_id"]) + "/images?api_key=" + etsy_api_key).json()
 			image_urls = [image["url_fullxfull"] for image in images["results"]]
 			
