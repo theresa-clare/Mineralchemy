@@ -6,30 +6,42 @@
 	<h2>Favorite Listings:</h2>
 
 	<h3>Minfind</h3>
-	{% for minfind_result in minfind_listings %}
-	<ul>
-		<li>{{ minfind_result["title"] }}</li>
-		<li>{{ minfind_result["price"] }}</li>
-		<li>{{ minfind_result["url"] }}</li>
-	</ul>
-	{% endfor %}
+	{% if minfind_listings == [] %}
+		<p>No favorites from Minfind</p>
+	{% else %}
+		{% for minfind_result in minfind_listings %}
+		<ul>
+			<li>{{ minfind_result["title"] }}</li>
+			<li>{{ minfind_result["price"] }}</li>
+			<li>{{ minfind_result["url"] }}</li>
+		</ul>
+		{% endfor %}
+	{% endif%}
 
 	<h3>Etsy</h3>
-	{% for etsy_result in etsy_listings %}
-	<ul>
-		<li>{{ etsy_result["title"] }}</li>
-		<li>{{ etsy_result["price"] }}</li>
-		<li>{{ etsy_result["url"] }}</li>
-	</ul>
-	{% endfor %}
+	{% if etsy_listings == [] %}
+		<p>No favorites from Etsy</p>
+	{% else %}
+		{% for etsy_result in etsy_listings %}
+		<ul>
+			<li>{{ etsy_result["title"] }}</li>
+			<li>{{ etsy_result["price"] }}</li>
+			<li>{{ etsy_result["url"] }}</li>
+		</ul>
+		{% endfor %}
+	{% endif %}
 
 	<h3>eBay</h3>
-	{% for ebay_result in ebay_listings %}
-	<ul>
-		<li>{{ ebay_result["title"] }}</li>
-		<li>{{ ebay_result["price"] }}</li>
-		<li>{{ ebay_result["url"] }}</li>
-	</ul>
-	{% endfor %}
+	{% if ebay_listings == [] %}
+		<p>No favorites from eBay</p>
+	{% else %}
+		{% for ebay_result in ebay_listings %}
+		<ul>
+			<li>{{ ebay_result["title"] }}</li>
+			<li>{{ ebay_result["price"] }}</li>
+			<li>{{ ebay_result["url"] }}</li>
+		</ul>
+		{% endfor %}
+	{% endif %}
 
 {% endblock %}
