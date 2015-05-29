@@ -8,7 +8,7 @@ ebay_appID = keys[1]
 
 
 def search_etsy(keywords, min_price, max_price):
-	"""Search Etsy for listings within a price range.
+	"""Search Etsy shops for listings within a price range.
 
 	Each listing is represented by a dictionary. The keys in the dictionary correspond with 
 	the listing id, listing origin, title, price, description, URL, and image URLs of the listing.
@@ -16,29 +16,23 @@ def search_etsy(keywords, min_price, max_price):
 	Returns number of listings and a list of dictionaries.
 	"""
 
-	etsy_parameters = {
-		"api_key":etsy_api_key,
-		"keywords":keywords,
-		"min_price":float(min_price),
-		"max_price":float(max_price),
-		"category":"art_and_collectibles/Collectibles",
-		"limit":1000,
-	}
-
-	r = requests.get("https://openapi.etsy.com/v2/listings/active", params=etsy_parameters).json()
-	
+	etsy_shop_ids = [7877556, 10879226, 7777338, 10537127, 8543678, 10879226, 7023347, 6951911]
 	etsy_listings = []
 	count = 0
-	exclude = ['Jewelry', 'necklace', 'ring', 'bracelet', 'pendant', 'bead']
 
-	for listing in r["results"]:
-		# Filter for listings that are not related to jewelry
-		# if keywords in listing["title"]:
-		if all(x in listing["tags"] for x in keywords.split()) and not \
-			(
-				any(x in listing["tags"] for x in exclude) or
-				any(x.title() in listing["tags"] for x in exclude)
-			):
+	for shop_id in etsy_shop_ids:
+		etsy_parameters = {
+			"api_key": etsy_api_key,
+			"shop_id_or_name": shop_id,
+			"keywords": keywords,
+			"min_price": float(min_price),
+			"max_price": float(max_price),
+			"limit": 100,
+		}
+
+		r = requests.get("https://openapi.etsy.com/v2/shops/%s/listings/active" % shop_id, params=etsy_parameters).json()
+
+		for listing in r["results"]:
 			images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing["listing_id"]) + "/images?api_key=" + etsy_api_key).json()
 			image_urls = [image["url_fullxfull"] for image in images["results"]]
 			
@@ -56,7 +50,7 @@ def search_etsy(keywords, min_price, max_price):
 
 			count += 1
 
-	return count, etsy_listings 
+	return count, etsy_listings
 
 
 def search_ebay(keywords, min_price, max_price):
