@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, flash, session
+from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from model import User, connect_to_db, db
 from search_apis import search_etsy, search_ebay
 from scraper import scrape_minfind
@@ -114,23 +114,33 @@ def get_results():
 	keywords = request.form["keywords"]
 	min_price = float(request.form["min_price"])
 	max_price = float(request.form["max_price"])
-
-	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
-	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
-	minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
-
-	total_count = etsy_num_results + int(ebay_num_results) + minfind_num_results
-
-	# Dictionary with origin as keys and list of dictionaries (listings) as values
-	all_listings = {
-		"Etsy": etsy_listings,
-		"eBay": ebay_listings,
-		"Minfind": minfind_listings
-	}
-
 	user_id = session.get("user_id", 0)
 
-	return render_template("search_results.html", total_count=total_count, all_listings=all_listings, user_id=user_id)
+	return render_template( "search_results.html", 
+							keywords=keywords, min_price=min_price, 
+							max_price=max_price, user_id=user_id )
+
+
+@app.route("/search_etsy", methods=['GET'])
+def get_etsy_results():
+	print "You are here!"
+
+	keywords = request.args.get('keywords')
+	min_price = request.args.get('min_price')
+	max_price = request.args.get('max_price')
+
+	print keywords
+	print min_price
+	print max_price
+
+	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
+
+	print etsy_num_results
+	print etsy_listings
+
+	success = { "etsyNumResults": etsy_num_results,
+				"etsyListings": etsy_listings }
+	return jsonify(success)
 
 
 @app.route("/add_to_favorites", methods=['GET'])

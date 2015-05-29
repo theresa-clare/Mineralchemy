@@ -1,47 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Search Results:</h1>
+Results:
+<p id="count">0</p>
 
-<h2>We found {{ total_count }} results:</h2>
-
-<h2>Results:</h2>
-
-{% for key in all_listings.keys() %}
-	<h3>{{ key }}</h3>
-
-	{% if all_listings[key] != [] %}
-		{% for listing in all_listings[key] %}
-			<ul>
-				<li>{{ listing["title"] }}</li>
-				<li>{{ listing["price"] }}</li>
-				<li><a href={{ listing["url"] }}>Listing URL</a></li>
-
-				{% if listing["description"] != None %}
-					<li>{{ listing["description"] }}</li>
-				{% endif %}
-
-				<li>
-					{% for image_url in listing["image_urls"] %}
-						<img src="{{ image_url }}">
-					{% endfor %}
-				</li>
-
-				<li>
-					<button type="button" class="favorite" value="{{ listing["listing_origin"] }},{{ listing["listing_id"] }}">Favorite</button>
-				</li>
-			</ul>
-		{% endfor %}
-		
-	{% else %}
-		<p> No results were found in {{ key }}.</p>
-	{% endif %}
-
-{% endfor %}
+<div id="Minfind"></div>
+<div id="Etsy"></div>
+<div id="eBay"></div>
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
 <script>
+	function getEtsyResults(evt){
+		$.ajax(
+			{
+				type: 'GET',
+				url: '/search_etsy', 
+				data: {
+					"keywords": "{{ keywords }}",
+					"min_price": {{ min_price }},
+					"max_price": {{ max_price }}
+				},
+				dataType: 'JSON',
+				success: function(response){
+
+					var count = parseInt($('#count').text().trim(), 10);
+					var new_count = count + response.etsyNumResults;
+					$('#count').text(new_count);
+
+					if (response.etsyListings.length != 0) {
+						$('#Etsy').append($("<h1></h1>").text("Etsy"));
+
+						for (i = 0; i < response.etsyListings.length; i++) {
+							var listing = response.etsyListings[i];
+
+							var title = $("<p></p>").text(listing.title);
+							var price = $("<p></p>").text(listing.price);
+							if (listing.description != []) {
+								description = $("<p></p>").text(listing.description);
+							};
+							var link = $("<a></a>").attr("href", listing.url).text("URL");
+
+							$('#Etsy').append(title, price, description, link);
+						};
+					} else {
+						$('#Etsy').append($("<h1></h1>").text("No results found on Etsy"));
+					};
+				}
+			}
+		);
+	}
+
+	getEtsyResults();
+
 	function addToFavorite(evt){
 		if ({{ user_id }} == 0){
 			alert("Please log in first!");
