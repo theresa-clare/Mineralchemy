@@ -121,25 +121,47 @@ def get_results():
 							max_price=max_price, user_id=user_id )
 
 
+@app.route("/scrape_minfind", methods=['GET'])
+def get_minfind_results():
+	keywords = request.args.get('keywords')
+	min_price = request.args.get('min_price')
+	max_price = request.args.get('max_price')
+
+	minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
+
+	print minfind_num_results
+	print minfind_listings
+
+	success = { "minfindNumResults": minfind_num_results, 
+				"minfindListings": minfind_listings }
+	return jsonify(success)
+
+
 @app.route("/search_etsy", methods=['GET'])
 def get_etsy_results():
-	print "You are here!"
 
 	keywords = request.args.get('keywords')
 	min_price = request.args.get('min_price')
 	max_price = request.args.get('max_price')
 
-	print keywords
-	print min_price
-	print max_price
-
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
-
-	print etsy_num_results
-	print etsy_listings
 
 	success = { "etsyNumResults": etsy_num_results,
 				"etsyListings": etsy_listings }
+	return jsonify(success)
+
+
+@app.route("/search_ebay", methods=['GET'])
+def get_ebay_results():
+	keywords = request.args.get('keywords')
+	min_price = request.args.get('min_price')
+	max_price = request.args.get('max_price')
+
+	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
+	user_id = session.get("user_id", 0)
+
+	success = { "ebayNumResults": ebay_num_results, 
+				"ebayListings": ebay_listings }
 	return jsonify(success)
 
 

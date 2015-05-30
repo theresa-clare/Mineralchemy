@@ -11,6 +11,46 @@ Results:
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
 <script>
+	function getMinfindResults(evt){
+		$.ajax(
+			{
+				type: 'GET',
+				url: '/scrape_minfind', 
+				data: {
+					"keywords": "{{ keywords }}",
+					"min_price": {{ min_price }},
+					"max_price": {{ max_price }}
+				},
+				dataType: 'JSON',
+				success: function(response){
+
+					var count = parseInt($('#count').text().trim(), 10);
+					var new_count = count + response.minfindNumResults;
+					$('#count').text(new_count);
+
+					if (response.minfindListings.length != 0) {
+						$('#Minfind').append($("<h1></h1>").text("Minfind"));
+
+						for (i = 0; i < response.minfindListings.length; i++) {
+							var listing = response.minfindListings[i];
+
+							var title = $("<p></p>").text(listing.title);
+							var price = $("<p></p>").text(listing.price);
+							if (listing.description != []) {
+								description = $("<p></p>").text(listing.description);
+							};
+							var link = $("<a></a>").attr("href", listing.url).text("URL");
+
+							$('#Minfind').append(title, price, description, link);
+						};
+					} else {
+						$('#Minfind').append($("<h1></h1>").text("No results found on Minfind"));
+					};
+				}
+			}
+		);
+	}
+
 	function getEtsyResults(evt){
 		$.ajax(
 			{
@@ -51,6 +91,48 @@ Results:
 		);
 	}
 
+	function getEbayResults(evt){
+		$.ajax(
+			{
+				type: 'GET',
+				url: '/search_ebay', 
+				data: {
+					"keywords": "{{ keywords }}",
+					"min_price": {{ min_price }},
+					"max_price": {{ max_price }}
+				},
+				dataType: 'JSON',
+				success: function(response){
+
+					var count = parseInt($('#count').text().trim(), 10);
+					var new_count = count + response.ebayNumResults;
+					$('#count').text(new_count);
+
+					if (response.ebayListings.length != 0) {
+						$('#eBay').append($("<h1></h1>").text("eBay"));
+
+						for (i = 0; i < response.ebayListings.length; i++) {
+							var listing = response.ebayListings[i];
+
+							var title = $("<p></p>").text(listing.title);
+							var price = $("<p></p>").text(listing.price);
+							if (listing.description != []) {
+								description = $("<p></p>").text(listing.description);
+							};
+							var link = $("<a></a>").attr("href", listing.url).text("URL");
+
+							$('#eBay').append(title, price, description, link);
+						};
+					} else {
+						$('#eBay').append($("<h1></h1>").text("No results found on eBay"));
+					};
+				}
+			}
+		);
+	}
+
+	getMinfindResults();
+	getEbayResults();
 	getEtsyResults();
 
 	function addToFavorite(evt){
