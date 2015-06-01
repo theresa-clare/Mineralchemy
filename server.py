@@ -123,6 +123,7 @@ def get_results():
 
 @app.route("/scrape_minfind", methods=['GET'])
 def get_minfind_results():
+
 	keywords = request.args.get('keywords')
 	min_price = request.args.get('min_price')
 	max_price = request.args.get('max_price')
@@ -158,7 +159,6 @@ def get_ebay_results():
 	max_price = request.args.get('max_price')
 
 	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
-	user_id = session.get("user_id", 0)
 
 	success = { "ebayNumResults": ebay_num_results, 
 				"ebayListings": ebay_listings }

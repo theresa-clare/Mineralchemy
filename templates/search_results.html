@@ -29,7 +29,7 @@ Results:
 					$('#count').text(new_count);
 
 					if (response.minfindListings.length != 0) {
-						$('#Minfind').append($("<h1></h1>").text("Minfind"));
+						$('#Minfind').append($("<h1></h1>").text("Minfind Results:"));
 
 						for (i = 0; i < response.minfindListings.length; i++) {
 							var listing = response.minfindListings[i];
@@ -69,7 +69,7 @@ Results:
 					$('#count').text(new_count);
 
 					if (response.etsyListings.length != 0) {
-						$('#Etsy').append($("<h1></h1>").text("Etsy"));
+						$('#Etsy').append($("<h1></h1>").text("Etsy Results:"));
 
 						for (i = 0; i < response.etsyListings.length; i++) {
 							var listing = response.etsyListings[i];
@@ -109,7 +109,7 @@ Results:
 					$('#count').text(new_count);
 
 					if (response.ebayListings.length != 0) {
-						$('#eBay').append($("<h1></h1>").text("eBay"));
+						$('#eBay').append($("<h1></h1>").text("eBay Results:"));
 
 						for (i = 0; i < response.ebayListings.length; i++) {
 							var listing = response.ebayListings[i];
