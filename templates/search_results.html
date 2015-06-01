@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-Results:
+<h1>Results:</h1>
 <p id="count">0</p>
 
 <div id="Minfind" class="website_div"></div>
@@ -10,10 +10,13 @@ Results:
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
 
-{% block javascript %}
-	<script type="text/javascript">
-	   {% include "results.js" %}
-	</script>
-{% endblock %}
+<script>
+var keywords = "{{ keywords }}";
+var min_price = {{ min_price }};
+var max_price = {{ max_price }};
+var user_id = {{ user_id }};
+</script>
+
+<script src="static/results.js"></script>
 
 {% endblock %}

@@ -6,7 +6,7 @@ function getResults(data){
 			data: {
 				"keywords": keywords,
 				"min_price": min_price,
-				"max_price": max_price,
+				"max_price": max_price
 			},
 			dataType: 'JSON',
 			success: function(response){
@@ -46,31 +46,29 @@ function getResults(data){
 	);
 }
 
-var searchData = {
-	etsyData : {
-				routeUrl : "/search_etsy",
-				idTag : "#Etsy",
-				resultTitle : "Etsy Results:", 
-				noResultsString : "No matching results found on Etsy"
-				},
-	ebayData : {
-				routeUrl : "/search_ebay",
-				idTag : "#eBay",
-				resultTitle : "eBay Results:", 
-				noResultsString : "No matching results found on eBay"
-				},
-	minfindData : {
-				routeUrl : "/scrape_minfind",
-				idTag : "#Minfind",
-				resultTitle : "Minfind Results:", 
-				noResultsString : "No matching results found on Minfind"
-				}
+var etsyData = {
+	routeUrl : "/search_etsy",
+	idTag : "#Etsy",
+	resultTitle : "Etsy Results:", 
+	noResultsString : "No matching results found on Etsy"
+};
+var ebayData = {
+	routeUrl : "/search_ebay",
+	idTag : "#eBay",
+	resultTitle : "eBay Results:", 
+	noResultsString : "No matching results found on eBay"
+};
+var minfindData = {
+	routeUrl : "/scrape_minfind",
+	idTag : "#Minfind",
+	resultTitle : "Minfind Results:", 
+	noResultsString : "No matching results found on Minfind"
 };
 
-$(document).ready(function() {
-	getResults(searchData.etsyData);
-	getResults(searchData.ebayData);
-	getResults(searchData.minfindData);
+$(document).ready(function(){
+	getResults(etsyData);
+	getResults(ebayData);
+	getResults(minfindData);
 });
 
 function addToFavorite(evt){
