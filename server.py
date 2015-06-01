@@ -130,8 +130,8 @@ def get_minfind_results():
 
 	minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
 
-	success = { "minfindNumResults": minfind_num_results, 
-				"minfindListings": minfind_listings }
+	success = { "numResults": minfind_num_results, 
+				"listingsFound": minfind_listings }
 	return jsonify(success)
 
 
@@ -144,8 +144,8 @@ def get_etsy_results():
 
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
 
-	success = { "etsyNumResults": etsy_num_results,
-				"etsyListings": etsy_listings }
+	success = { "numResults": etsy_num_results,
+				"listingsFound": etsy_listings }
 	return jsonify(success)
 
 
@@ -157,8 +157,8 @@ def get_ebay_results():
 
 	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
 
-	success = { "ebayNumResults": int(ebay_num_results), 
-				"ebayListings": ebay_listings }
+	success = { "numResults": int(ebay_num_results), 
+				"listingsFound": ebay_listings }
 	return jsonify(success)
 
 

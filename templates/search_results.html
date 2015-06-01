@@ -11,11 +11,11 @@ Results:
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
 <script>
-	function getMinfindResults(evt){
+	function getResults(data){
 		$.ajax(
 			{
 				type: 'GET',
-				url: '/scrape_minfind', 
+				url: data.routeUrl, 
 				data: {
 					"keywords": "{{ keywords }}",
 					"min_price": {{ min_price }},
@@ -25,14 +25,14 @@ Results:
 				success: function(response){
 
 					var count = parseInt($('#count').text().trim(), 10);
-					var new_count = count + response.minfindNumResults;
+					var new_count = count + response.numResults;
 					$('#count').text(new_count);
 
-					if (response.minfindNumResults > 0) {
-						$('#Minfind').append($("<h1></h1>").text("Minfind Results:"));
+					if (response.numResults > 0) {
+						$(data.idTag).append($("<h1></h1>").text(data.resultTitle));
 
-						for (i = 0; i < response.minfindListings.length; i++) {
-							var listing = response.minfindListings[i];
+						for (i = 0; i < response.numResults; i++) {
+							var listing = response.listingsFound[i];
 
 							var title = $("<p></p>").text(listing.title);
 							var price = $("<p></p>").text(listing.price);
@@ -41,99 +41,38 @@ Results:
 							};
 							var link = $("<a></a>").attr("href", listing.url).text("URL");
 
-							$('#Minfind').append(title, price, description, link);
+							$(data.idTag).append(title, price, description, link);
 						};
 					} else {
-						$('#Minfind').append($("<h1></h1>").text("No results found on Minfind"));
+						$(data.idTag).append($("<h1></h1>").text(data.noResultsString));
 					};
 				}
 			}
 		);
 	}
 
-	function getEtsyResults(evt){
-		$.ajax(
-			{
-				type: 'GET',
-				url: '/search_etsy', 
-				data: {
-					"keywords": "{{ keywords }}",
-					"min_price": {{ min_price }},
-					"max_price": {{ max_price }}
-				},
-				dataType: 'JSON',
-				success: function(response){
+	var etsyData = {
+		routeUrl : "/search_etsy",
+		idTag : "#Etsy",
+		resultTitle : "Etsy Results:", 
+		noResultsString : "No matching results found on Etsy"
+	};
+	var ebayData = {
+		routeUrl : "/search_ebay",
+		idTag : "#eBay",
+		resultTitle : "eBay Results:", 
+		noResultsString : "No matching results found on eBay"
+	};
+	var minfindData = {
+		routeUrl : "/scrape_minfind",
+		idTag : "#Minfind",
+		resultTitle : "Minfind Results:", 
+		noResultsString : "No matching results found on Minfind"
+	};
 
-					var count = parseInt($('#count').text().trim(), 10);
-					var new_count = count + response.etsyNumResults;
-					$('#count').text(new_count);
-
-					if (response.etsyNumResults > 0) {
-						$('#Etsy').append($("<h1></h1>").text("Etsy Results:"));
-
-						for (i = 0; i < response.etsyListings.length; i++) {
-							var listing = response.etsyListings[i];
-
-							var title = $("<p></p>").text(listing.title);
-							var price = $("<p></p>").text(listing.price);
-							if (listing.description != []) {
-								description = $("<p></p>").text(listing.description);
-							};
-							var link = $("<a></a>").attr("href", listing.url).text("URL");
-
-							$('#Etsy').append(title, price, description, link);
-						};
-					} else {
-						$('#Etsy').append($("<h1></h1>").text("No results found on Etsy"));
-					};
-				}
-			}
-		);
-	}
-
-	function getEbayResults(evt){
-		$.ajax(
-			{
-				type: 'GET',
-				url: '/search_ebay', 
-				data: {
-					"keywords": "{{ keywords }}",
-					"min_price": {{ min_price }},
-					"max_price": {{ max_price }}
-				},
-				dataType: 'JSON',
-				success: function(response){
-
-					var count = parseInt($('#count').text().trim(), 10);
-					var new_count = count + response.ebayNumResults;
-					$('#count').text(new_count);
-
-					if (response.ebayNumResults > 0) {
-						$('#eBay').append($("<h1></h1>").text("eBay Results:"));
-
-						for (i = 0; i < response.ebayListings.length; i++) {
-							var listing = response.ebayListings[i];
-
-							var title = $("<p></p>").text(listing.title);
-							var price = $("<p></p>").text(listing.price);
-							if (listing.description != []) {
-								description = $("<p></p>").text(listing.description);
-							};
-							var link = $("<a></a>").attr("href", listing.url).text("URL");
-
-							$('#eBay').append(title, price, description, link);
-						};
-					} else {
-						$('#eBay').append($("<h1></h1>").text("No results found on eBay"));
-					};
-				}
-			}
-		);
-	}
-
-	getMinfindResults();
-	getEbayResults();
-	getEtsyResults();
+	getResults(etsyData);
+	getResults(ebayData);
+	getResults(minfindData);
 
 	function addToFavorite(evt){
 		if ({{ user_id }} == 0){
