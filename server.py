@@ -116,9 +116,13 @@ def get_results():
 	max_price = float(request.form["max_price"])
 	user_id = session.get("user_id", 0)
 
-	return render_template( "search_results.html", 
-							keywords=keywords, min_price=min_price, 
-							max_price=max_price, user_id=user_id )
+	if min_price > max_price:
+		flash("Minimum price must be smaller than maximum price!")
+		return redirect("/search")
+	else:
+		return render_template( "search_results.html", 
+								keywords=keywords, min_price=min_price, 
+								max_price=max_price, user_id=user_id )	
 
 
 @app.route("/scrape_minfind", methods=['GET'])
