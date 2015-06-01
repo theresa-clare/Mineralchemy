@@ -124,14 +124,11 @@ def get_results():
 @app.route("/scrape_minfind", methods=['GET'])
 def get_minfind_results():
 
-	keywords = request.args.get('keywords')
-	min_price = request.args.get('min_price')
-	max_price = request.args.get('max_price')
+	keywords = request.args.get('keywords').encode(encoding='UTF-8',errors='strict')
+	min_price = float(request.args.get('min_price'))
+	max_price = float(request.args.get('max_price'))
 
 	minfind_num_results, minfind_listings = scrape_minfind(keywords, min_price, max_price)
-
-	print minfind_num_results
-	print minfind_listings
 
 	success = { "minfindNumResults": minfind_num_results, 
 				"minfindListings": minfind_listings }
@@ -141,9 +138,9 @@ def get_minfind_results():
 @app.route("/search_etsy", methods=['GET'])
 def get_etsy_results():
 
-	keywords = request.args.get('keywords')
-	min_price = request.args.get('min_price')
-	max_price = request.args.get('max_price')
+	keywords = request.args.get('keywords').encode(encoding='UTF-8',errors='strict')
+	min_price = float(request.args.get('min_price'))
+	max_price = float(request.args.get('max_price'))
 
 	etsy_num_results, etsy_listings = search_etsy(keywords, min_price, max_price)
 
@@ -154,13 +151,13 @@ def get_etsy_results():
 
 @app.route("/search_ebay", methods=['GET'])
 def get_ebay_results():
-	keywords = request.args.get('keywords')
-	min_price = request.args.get('min_price')
-	max_price = request.args.get('max_price')
+	keywords = request.args.get('keywords').encode(encoding='UTF-8',errors='strict')
+	min_price = float(request.args.get('min_price'))
+	max_price = float(request.args.get('max_price'))
 
 	ebay_num_results, ebay_listings = search_ebay(keywords, min_price, max_price)
 
-	success = { "ebayNumResults": ebay_num_results, 
+	success = { "ebayNumResults": int(ebay_num_results), 
 				"ebayListings": ebay_listings }
 	return jsonify(success)
 
