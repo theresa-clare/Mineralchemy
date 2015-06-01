@@ -4,9 +4,9 @@
 Results:
 <p id="count">0</p>
 
-<div id="Minfind"></div>
-<div id="Etsy"></div>
-<div id="eBay"></div>
+<div id="Minfind" class="website_div"></div>
+<div id="Etsy" class="website_div"></div>
+<div id="eBay" class="website_div"></div>
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
@@ -33,15 +33,19 @@ Results:
 
 						for (i = 0; i < response.numResults; i++) {
 							var listing = response.listingsFound[i];
-
 							var title = $("<p></p>").text(listing.title);
 							var price = $("<p></p>").text(listing.price);
+
 							if (listing.description != []) {
 								description = $("<p></p>").text(listing.description);
 							};
+
 							var link = $("<a></a>").attr("href", listing.url).text("URL");
 
-							$(data.idTag).append(title, price, description, link);
+							var valueString = listing.listing_origin + "," + listing.listing_id
+							var button = $("<button></button>").text("Favorite").addClass("favorite").attr("value", valueString);
+
+							$(data.idTag).append(title, price, description, link, button);
 						};
 					} else {
 						$(data.idTag).append($("<h1></h1>").text(data.noResultsString));
@@ -102,7 +106,7 @@ Results:
 		};
 	};
 
-	$('.favorite').on('click', addToFavorite);
+	$('.website_div').on('click', '.favorite', addToFavorite);
 </script>
 
 {% endblock %}
