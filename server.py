@@ -197,9 +197,9 @@ def user_page(user_id):
 							ebay_listings=ebay_listings, minfind_listings=minfind_listings)
 
 
-@app.route("/data", methods=['GET'])
-def get_file():
-	f = open("static/elements.csv")
+@app.route("/data/<string:filename>", methods=['GET'])
+def get_file(filename):
+	f = open("static/" + filename)
 	text = f.read()
 	return text
 
