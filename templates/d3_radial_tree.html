@@ -49,8 +49,10 @@ function make_chart(filename, div_id){
 
     // Create nodes for each unique source and target.
     links.forEach(function(link) {
-      var parent = link.source = nodeByName(link.source),
-          child = link.target = nodeByName(link.target);
+      // debugger
+      var parent = link.source = nodeByName(link.source, link.url),
+          child = link.target = nodeByName(link.target, link.url),
+          url = link.url;
       if (parent.children) parent.children.push(child);
       else parent.children = [child];
     });
@@ -79,8 +81,12 @@ function make_chart(filename, div_id){
         .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
         .text(function(d) { return d.name; });
 
-    function nodeByName(name) {
-      return nodesByName[name] || (nodesByName[name] = {name: name});
+    node.on('click', function(d){
+        window.open(d.url, '_blank');
+      })
+
+    function nodeByName(name, url) {
+      return nodesByName[name] || (nodesByName[name] = {name: name, url: url});
     }
   });
 }
