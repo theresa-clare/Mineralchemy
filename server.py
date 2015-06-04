@@ -197,6 +197,19 @@ def user_page(user_id):
 							ebay_listings=ebay_listings, minfind_listings=minfind_listings)
 
 
+@app.route("/data", methods=['GET'])
+def get_file():
+	f = open("static/elements.csv")
+	text = f.read()
+	return text
+
+
+@app.route("/learn", methods=['GET'])
+def show_classification():
+
+	return render_template("d3_radial_tree.html")
+
+
 if __name__ == '__main__':
 	app.debug = True
 	connect_to_db(app)
