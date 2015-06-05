@@ -31,6 +31,8 @@
 </style>
 <body>
   <div id="elements"></div>
+  <div id="sulfides_sulfosalts_1"></div>
+  <div id="sulfides_sulfosalts_2"></div>
   <div id="halides"></div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -103,6 +105,8 @@ function make_chart(filename, div_id){
 
 
 make_chart("elements.csv", "#elements");
+make_chart("sulfides_sulfosalts_1.csv", "#sulfides_sulfosalts_1");
+make_chart("sulfides_sulfosalts_2.csv", "#sulfides_sulfosalts_2");
 make_chart("halides.csv", "#halides");
 
 d3.select(self.frameElement).style("height", diameter - 150 + "px");
