@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+{% extends 'base.html'%}
+{% block content %}
+
 <meta charset="utf-8">
 <style>
 
@@ -30,14 +32,8 @@
 
 </style>
 <body>
-  <div id="elements"></div>
-  <div id="sulfides_sulfosalts_1"></div>
-  <div id="sulfides_sulfosalts_2"></div>
-  <div id="halides"></div>
-  <div id="oxides_1"></div>
-  <div id="oxides_2"></div>
-  <div id="oxides_3"></div>
-  <div id="oxides_4"></div>
+
+  <div id="all_visualizations"></div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
@@ -65,7 +61,6 @@ function make_chart(filename, div_id){
 
     // Create nodes for each unique source and target.
     links.forEach(function(link) {
-      // debugger
       var parent = link.source = nodeByName(link.source, link.url),
           child = link.target = nodeByName(link.target, link.url),
           url = link.url;
@@ -107,16 +102,25 @@ function make_chart(filename, div_id){
   });
 }
 
+classification_data = {
+  elements : ["elements.csv", "elements"],
+  ss_1 : ["sulfides_sulfosalts_1.csv", "sulfides_sulfosalts_1"],
+  ss_2 : ["sulfides_sulfosalts_2.csv", "sulfides_sulfosalts_2"],
+  halides : ["halides.csv", "halides"],
+  oxides_1 : ["oxides_1.csv", "oxides_1"],
+  oxides_2 : ["oxides_2.csv", "oxides_2"],
+  oxides_3 : ["oxides_3.csv", "oxides_3"],
+  oxides_4 : ["oxides_4.csv", "oxides_4"],
+};
 
-make_chart("elements.csv", "#elements");
-make_chart("sulfides_sulfosalts_1.csv", "#sulfides_sulfosalts_1");
-make_chart("sulfides_sulfosalts_2.csv", "#sulfides_sulfosalts_2");
-make_chart("halides.csv", "#halides");
-make_chart("oxides_1.csv", "#oxides_1");
-make_chart("oxides_2.csv", "#oxides_2");
-make_chart("oxides_3.csv", "#oxides_3");
-make_chart("oxides_4.csv", "#oxides_4");
+for (var key in classification_data){
+  new_div = $("<div></div>").attr("id", classification_data[key][1]);
+  $("#all_visualizations").append(new_div);
+  make_chart(classification_data[key][0], ("#" + classification_data[key][1]));
+};
 
 d3.select(self.frameElement).style("height", diameter - 150 + "px");
 
 </script>
+
+{% endblock %}
