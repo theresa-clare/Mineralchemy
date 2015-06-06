@@ -80,24 +80,28 @@ def search_ebay(keywords, min_price, max_price):
 	}
 
 	r = requests.get("http://svcs.ebay.com/services/search/FindingService/v1", params=ebay_parameters).json()
-	listings = r["findItemsAdvancedResponse"][0]["searchResult"][0]["item"]
 
 	ebay_listings = []
-	count = r["findItemsAdvancedResponse"][0]["searchResult"][0]["@count"]
+	count = int(r["findItemsAdvancedResponse"][0]["searchResult"][0]["@count"])
 
-	for listing in listings:
-		new_listing = {
-			"listing_id": listing["itemId"][0],
-			"listing_origin": "ebay",
-			"title": listing["title"][0],
-			"price": listing["sellingStatus"][0]["currentPrice"][0]["__value__"],
-			"description": None, # Double check if need to make a new API call
-			"url": listing["viewItemURL"][0]
-			}
-		try:
-			new_listing["image_urls"] = listing["galleryPlusPictureURL"]
-		except:
-			new_listing["image_urls"] = []
-		ebay_listings.append(new_listing)
+	if count == 0:
+		return count, ebay_listings
+	else:
+		listings = r["findItemsAdvancedResponse"][0]["searchResult"][0]["item"]
 
-	return count, ebay_listings
+		for listing in listings:
+			new_listing = {
+				"listing_id": listing["itemId"][0],
+				"listing_origin": "ebay",
+				"title": listing["title"][0],
+				"price": listing["sellingStatus"][0]["currentPrice"][0]["__value__"],
+				"description": None, # Double check if need to make a new API call
+				"url": listing["viewItemURL"][0]
+				}
+			try:
+				new_listing["image_urls"] = listing["galleryPlusPictureURL"]
+			except:
+				new_listing["image_urls"] = []
+			ebay_listings.append(new_listing)
+
+		return count, ebay_listings
