@@ -113,9 +113,7 @@ def get_results():
 		flash("Minimum price must be smaller than maximum price!")
 		return redirect("/search")
 	else:
-		return render_template( "search_results.html", 
-								keywords=keywords, min_price=min_price, 
-								max_price=max_price, user_id=user_id )	
+		return render_template( "search_results.html", keywords=keywords, min_price=min_price, max_price=max_price, user_id=user_id )	
 
 
 @app.route("/scrape_minfind", methods=['GET'])
@@ -162,10 +160,15 @@ def get_ebay_results():
 @app.route("/add_to_favorites", methods=['GET'])
 def add_to_favorites():
 	"""Add listing to favorites table in database."""
-	
-	user_id = request.args.get('user_id').encode(encoding='UTF-8',errors='strict')
-	listing_origin = request.args.get('listing_origin').encode(encoding='UTF-8',errors='strict')
-	listing_id = request.args.get('listing_id').encode(encoding='UTF-8',errors='strict')
+
+	user_id = int(request.args.get('user_id'))
+	listing_origin = request.args.get('listing_origin')
+	listing_id = int(request.args.get('listing_id'))
+	title = request.args.get('title')
+	price = float(request.args.get('price'))
+	description = request.args.get('description')
+	url = request.args.get('url')
+	primary_image = request.args.get('primary_image')
 
 	# Check to see if listing is already in favorites table for that user
 	old_favorite_query = "SELECT * FROM favorites WHERE user_id = ? AND listing_id = ?"
@@ -175,8 +178,8 @@ def add_to_favorites():
 	if old_favorite_result != []:
 		return "You have already added this to your favorites!"
 	else:
-		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id) VALUES (?, ?, ?)"
-		cursor.execute(new_favorite_query, (user_id, listing_origin, listing_id))
+		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id, title, price, description, url, primary_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+		cursor.execute(new_favorite_query, (user_id, listing_origin, listing_id, title, price, description, url, primary_image))
 		connection.commit()
 		return "Successfully added to your favorites!"
 
@@ -193,8 +196,7 @@ def user_page(user_id):
 
 	etsy_listings, ebay_listings, minfind_listings = get_favorites(results)
 
-	return render_template("user.html", user=user, etsy_listings=etsy_listings, 
-							ebay_listings=ebay_listings, minfind_listings=minfind_listings)
+	return render_template("user.html", user=user, etsy_listings=etsy_listings, ebay_listings=ebay_listings, minfind_listings=minfind_listings)
 
 
 @app.route("/data/<string:filename>", methods=['GET'])
