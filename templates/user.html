@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-	<h1>This is the details page of {{ user.email }}</h1>
+	<h1>Favorite Listings of {{ user.email }}:</h1>
 
-	<h2>Favorite Listings:</h2>
-
-	<h3>Minfind</h3>
+	<h2>Minfind</h2>
 	{% if minfind_listings == [] %}
 		<p>No favorites from Minfind</p>
 	{% else %}
@@ -13,12 +11,14 @@
 		<ul>
 			<li>{{ minfind_result["title"] }}</li>
 			<li>{{ minfind_result["price"] }}</li>
-			<li>{{ minfind_result["url"] }}</li>
+			<li>{{ minfind_result["description"] }}</li>
+			<li><a href="{{ minfind_result["url"] }}">URL</a></li>
+			<li><img src="{{ minfind_result["primary_image"] }}"></li>
 		</ul>
 		{% endfor %}
 	{% endif%}
 
-	<h3>Etsy</h3>
+	<h2>Etsy</h2>
 	{% if etsy_listings == [] %}
 		<p>No favorites from Etsy</p>
 	{% else %}
@@ -26,12 +26,14 @@
 		<ul>
 			<li>{{ etsy_result["title"] }}</li>
 			<li>{{ etsy_result["price"] }}</li>
-			<li>{{ etsy_result["url"] }}</li>
+			<li>{{ etsy_result["description"] }}</li>
+			<li><a href="{{ etsy_result["url"] }}">URL</a></li>
+			<li><img src="{{ etsy_result["primary_image"] }}"></li>
 		</ul>
 		{% endfor %}
 	{% endif %}
 
-	<h3>eBay</h3>
+	<h2>eBay</h2>
 	{% if ebay_listings == [] %}
 		<p>No favorites from eBay</p>
 	{% else %}
@@ -39,7 +41,9 @@
 		<ul>
 			<li>{{ ebay_result["title"] }}</li>
 			<li>{{ ebay_result["price"] }}</li>
-			<li>{{ ebay_result["url"] }}</li>
+			<li>{{ ebay_result["description"] }}</li>
+			<li><a href="{{ ebay_result["url"] }}">URL</a></li>
+			<li><img src="{{ ebay_result["primary_image"] }}"></li>
 		</ul>
 		{% endfor %}
 	{% endif %}

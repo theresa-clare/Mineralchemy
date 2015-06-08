@@ -190,7 +190,7 @@ def user_page(user_id):
 
 	user = User.query.get(user_id)
 
-	sql_query = "SELECT listing_origin, listing_id FROM favorites WHERE user_id = ?"
+	sql_query = "SELECT * FROM favorites WHERE user_id = ?"
 	cursor.execute(sql_query,(user.user_id,))
 	results = cursor.fetchall()
 
