@@ -19,6 +19,7 @@ def search_etsy(keywords, min_price, max_price):
 	etsy_shop_ids = [7877556, 10879226, 7777338, 10537127, 8543678, 10879226, 7023347, 6951911]
 	etsy_listings = []
 	count = 0
+	exclude = ["jewelry", "bead", "ring", "bracelet", "necklace", "earrings"]
 
 	for shop_id in etsy_shop_ids:
 		etsy_parameters = {
@@ -33,22 +34,23 @@ def search_etsy(keywords, min_price, max_price):
 		r = requests.get("https://openapi.etsy.com/v2/shops/%s/listings/active" % shop_id, params=etsy_parameters).json()
 
 		for listing in r["results"]:
-			images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing["listing_id"]) + "/images?api_key=" + etsy_api_key).json()
-			image_urls = [image["url_fullxfull"] for image in images["results"]]
-			
-			etsy_listings.append(
-				{
-				"listing_id": listing["listing_id"],
-				"listing_origin": "etsy",
-				"title": listing["title"],
-				"price": listing["price"], 
-				"description": listing["description"],
-				"url": listing["url"],
-				"image_urls": image_urls
-				}
-			)
+			if not any(word in listing["title"] for word in exclude):
+				images = requests.get("https://openapi.etsy.com/v2/listings/" + str(listing["listing_id"]) + "/images?api_key=" + etsy_api_key).json()
+				image_urls = [image["url_fullxfull"] for image in images["results"]]
+				
+				etsy_listings.append(
+					{
+					"listing_id": listing["listing_id"],
+					"listing_origin": "etsy",
+					"title": listing["title"],
+					"price": listing["price"], 
+					"description": listing["description"],
+					"url": listing["url"],
+					"image_urls": image_urls
+					}
+				)
 
-			count += 1
+				count += 1
 
 	return count, etsy_listings
 
