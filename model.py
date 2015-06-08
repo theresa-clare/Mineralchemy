@@ -32,6 +32,11 @@ class Favorite(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 	listing_origin = db.Column(db.String(64), nullable=False)
 	listing_id = db.Column(db.Integer, nullable=False)
+	title = db.Column(db.String(100), nullable=False)
+	price = db.Column(db.Float, nullable=False)
+	description = db.Column(db.String(1500), nullable=False)
+	url = db.Column(db.String(200), nullable=False)
+	primary_image = db.Column(db.String(100), nullable=False)
 
 	user = db.relationship("User", backref=db.backref("favorites", order_by=favorite_id))
 
