@@ -6,7 +6,7 @@ function getResults(data){
 			data: {
 				"keywords": keywords,
 				"min_price": min_price,
-				"max_price": max_price
+				"max_price": max_price,
 			},
 			dataType: 'JSON',
 			success: function(response){
@@ -34,8 +34,7 @@ function getResults(data){
 							$(data.idTag).append(image);
 						};
 
-						var valueString = listing.listing_origin + "," + listing.listing_id;
-						var button = $("<button></button>").text("Favorite").addClass("favorite").attr("value", valueString);
+						var button = $("<button></button>").text("Favorite").addClass("favorite").attr("value", JSON.stringify(listing));
 						$(data.idTag).append(button);
 					};
 				} else {
@@ -46,56 +45,52 @@ function getResults(data){
 	);
 }
 
-var etsyData = {
-	routeUrl : "/search_etsy",
-	idTag : "#Etsy",
-	resultTitle : "Etsy Results:", 
-	noResultsString : "No matching results found on Etsy"
-};
-var ebayData = {
-	routeUrl : "/search_ebay",
-	idTag : "#eBay",
-	resultTitle : "eBay Results:", 
-	noResultsString : "No matching results found on eBay"
-};
-var minfindData = {
-	routeUrl : "/scrape_minfind",
-	idTag : "#Minfind",
-	resultTitle : "Minfind Results:", 
-	noResultsString : "No matching results found on Minfind"
+var searchData = {
+	etsyData : {
+				routeUrl : "/search_etsy",
+				idTag : "#Etsy",
+				resultTitle : "Etsy Results:", 
+				noResultsString : "No matching results found on Etsy"
+				},
+	ebayData : {
+				routeUrl : "/search_ebay",
+				idTag : "#eBay",
+				resultTitle : "eBay Results:", 
+				noResultsString : "No matching results found on eBay"
+				},
+	minfindData : {
+				routeUrl : "/scrape_minfind",
+				idTag : "#Minfind",
+				resultTitle : "Minfind Results:", 
+				noResultsString : "No matching results found on Minfind"
+				}
 };
 
-$(document).ready(function(){
-	getResults(etsyData);
-	getResults(ebayData);
-	getResults(minfindData);
+$(document).ready(function() {
+	getResults(searchData.etsyData);
+	getResults(searchData.ebayData);
+	getResults(searchData.minfindData);
 });
 
 function addToFavorite(evt){
 	if (user_id == 0){
 		alert("Please log in first!");
 	} else {
-		origin_id_string = $(evt.currentTarget).attr("value");
-		origin_id_array = origin_id_string.split(",");
-		var listing_origin = origin_id_array[0];
-		var listing_id = parseInt(origin_id_array[1], 10);
+		var listing = JSON.parse($(evt.currentTarget).attr("value"));
+		listing.user_id = user_id;
+		listing.primary_image = listing.image_urls[0];
 
 		$.ajax(
 			{
 				type: 'GET',
 				url: '/add_to_favorites',
-				data: {
-					"user_id": user_id,
-					"listing_origin": listing_origin,
-					"listing_id": listing_id
-				},
-				dataType: "text",
-				success: function(response){
+				data: listing,
+				dataType: 'text',
+				success: function(response) {
 					alert(response);
 				}
 			}
 		);
-
 	};
 };
 
