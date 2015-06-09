@@ -206,7 +206,7 @@ def get_file(filename):
 	return text
 
 
-@app.route("/learn", methods=['GET'])
+@app.route("/discover", methods=['GET'])
 def show_classification():
 
 	return render_template("d3_radial_tree.html")

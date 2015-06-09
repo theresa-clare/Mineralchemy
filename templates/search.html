@@ -1,18 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Search for Minerals</h1>
+<div class="container">
 
-<form action="/search_results" method="POST">
+	<h2 class="text-center title">Search for Minerals</h2>
 
-	Keywords:<input type="text" name="keywords" required><br>
+	<div class="row">
+			<div class="col-sm-8 col-sm-offset-2 text-center">
+			<form action="/search_results" method="POST">
 
-	Price Range:<br>
-	<input type="text" name="min_price" placeholder="Low" required> to 
-	<input type="text" name="max_price" placeholder="High" required><br>
+				<p class="lead thumbnail">Keywords</p>
+				<input type="text" name="keywords" placeholder="e.g. Amethyst" required><br><br>
 
-	<input type="submit">
+				<p class="lead thumbnail">Price Range</p>
+				<input type="text" name="min_price" placeholder="Low" required> to 
+				<input type="text" name="max_price" placeholder="High" required><br><br>
 
-</form>
+				<input type="submit" class="btn btn-default">
+
+			</form>
+		</div>
+	</div>
+
+</div>
 
 {% endblock %}

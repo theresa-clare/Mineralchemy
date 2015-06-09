@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Results:</h1>
+<h2 class="text-center title">Results:</h2>
 <p id="count">0</p>
 
-<div id="Minfind" class="website_div"></div>
-<div id="Etsy" class="website_div"></div>
-<div id="eBay" class="website_div"></div>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<div class="container">
+	<div id="Minfind" class="website_div"></div>
+	<div id="Etsy" class="website_div"></div>
+	<div id="eBay" class="website_div"></div>
+</div>
 
 <script>
 var keywords = "{{ keywords }}";

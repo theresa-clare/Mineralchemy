@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Login</h1>
+<div class="container">
 
-<form action="/login" method="POST">
+	<h2 class="text-center title">Login</h2>
 
-	Email<input type="email" name="email" required><br>
-	Password<input type="password" name="password" required><br>
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+			<form action="/login" method="POST">
 
-	<input type="submit">
+				<p class="lead thumbnail">Email</p>
+				<input type="email" name="email" placeholder="your@email.com"required><br><br>
+				
+				<p class="lead thumbnail">Password</p>
+				<input type="password" name="password" placeholder="*******" required><br><br>
 
-</form>
+				<input type="submit" class="btn btn-default">
 
-<p>
-	Don't have an account? <a href="/signup">Sign Up!</a>
-</p>
+			</form><br><br>
+
+			<p>Don't have an account? <a href="/signup">Sign Up!</a></p>
+		</div>
+	</div>
+
+</div>
 
 {% endblock %}
