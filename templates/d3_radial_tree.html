@@ -30,10 +30,40 @@
   stroke-width: 1.5px;
 }
 
+#Elements-title {
+  color: orange;
+}
+
+#SS-title {
+  color: green;
+}
+
+#Halides-title {
+  color: teal;
+}
+
+#Oxides-title {
+  color: purple;
+}
+
 </style>
 <body>
 
-<div class="container" id="all_visualizations"></div>
+<div class="container">
+  <h2 class="text-center title">Discover</h2>
+
+  <h2 class="subtitle thumbnail-darker" id="Elements-title">Elements</h2>
+  <div class="container thumbnail-darker" id="Elements"></div><br>
+
+  <h2 class="subtitle thumbnail-darker" id="SS-title">Sulfosalts and Sulfides</h2>
+  <div class="container thumbnail-darker" id="Sulfides-Sulfosalts"></div><br>
+
+  <h2 class="subtitle thumbnail-darker" id="Halides-title">Halides</h2>
+  <div class="container thumbnail-darker" id="Halides"></div><br>
+
+  <h2 class="subtitle thumbnail-darker" id="Oxides-title">Oxides</h2>
+  <div class="container thumbnail-darker" id="Oxides"></div><br>
+</div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
@@ -48,7 +78,7 @@ var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
 
-function make_chart(filename, div_id){
+function make_chart(filename, div_id, title){
   var svg = d3.select(div_id).append("svg")
       .attr("width", diameter)
       .attr("height", diameter)
@@ -94,7 +124,7 @@ function make_chart(filename, div_id){
 
     node.on('click', function(d){
         window.open(d.url, '_blank');
-      })
+      });
 
     function nodeByName(name, url) {
       return nodesByName[name] || (nodesByName[name] = {name: name, url: url});
@@ -103,20 +133,26 @@ function make_chart(filename, div_id){
 }
 
 classification_data = {
-  elements : ["elements.csv", "elements"],
-  ss_1 : ["sulfides_sulfosalts_1.csv", "sulfides_sulfosalts_1"],
-  ss_2 : ["sulfides_sulfosalts_2.csv", "sulfides_sulfosalts_2"],
-  halides : ["halides.csv", "halides"],
-  oxides_1 : ["oxides_1.csv", "oxides_1"],
-  oxides_2 : ["oxides_2.csv", "oxides_2"],
-  oxides_3 : ["oxides_3.csv", "oxides_3"],
-  oxides_4 : ["oxides_4.csv", "oxides_4"],
+  elements : ["elements.csv", "elements", "Elements"],
+  ss_1 : ["sulfides_sulfosalts_1.csv", "sulfides_sulfosalts_1", "Sulfides-Sulfosalts"],
+  ss_2 : ["sulfides_sulfosalts_2.csv", "sulfides_sulfosalts_2", "Sulfides-Sulfosalts"],
+  halides : ["halides.csv", "halides", "Halides"],
+  oxides_1 : ["oxides_1.csv", "oxides_1", "Oxides"],
+  oxides_2 : ["oxides_2.csv", "oxides_2", "Oxides"],
+  oxides_3 : ["oxides_3.csv", "oxides_3", "Oxides"],
+  oxides_4 : ["oxides_4.csv", "oxides_4", "Oxides"],
 };
 
 for (var key in classification_data){
   new_div = $("<div></div>").attr("id", classification_data[key][1]);
-  $("#all_visualizations").append(new_div);
-  make_chart(classification_data[key][0], ("#" + classification_data[key][1]));
+  $(new_div).attr("class", classification_data[2]);
+
+  // header = $("<h2></h2>").attr("class", "text-center title");
+  // $(header).append(classification_data[2]);
+  // $(new_div).append(header);
+
+  $("#" + classification_data[key][2]).append(new_div);
+  make_chart(classification_data[key][0], ("#" + classification_data[key][1]), classification_data[2]);
 };
 
 d3.select(self.frameElement).style("height", diameter - 150 + "px");
