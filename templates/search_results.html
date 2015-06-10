@@ -1,14 +1,69 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2 class="text-center title">Results:</h2>
-<p id="count">0</p>
+<style>
 
-<div class="container">
-	<div id="Minfind" class="website_div"></div>
-	<div id="Etsy" class="website_div"></div>
-	<div id="eBay" class="website_div"></div>
+.result-title {
+	padding-left: 17px;
+	color: purple;
+}
+
+.result-title-price { 
+	font-family: 'Wire One', Helvetica, Arial, sans-serif;
+	font-weight:normal;
+	margin-bottom:15px; 
+	color: black; 
+	line-height:1em;
+	line-height:.9em;
+	font-size:3em;
+	margin-top:0;
+	margin-bottom:20px; 
+}
+
+.listing-p {
+	color: black;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.website-div {
+	margin-left: auto;
+	margin-right: auto;
+	height: 700px;
+	width: 1000px;
+}
+
+.content {
+	height: 600px;
+	overflow: auto;
+}
+
+</style>
+
+<body>
+<div class="container" id="all_results">
+	<h2 class="text-center title" id="count">0</h2>
+	<h2 class="text-center title">Results Found</h2>
+
+	<div class="website-div">
+		<div id="EtsyResults"></div>
+		<div id="Etsy" class="content"></div>
+	</div><br><br>
+
+	<div class="website-div">
+		<div id="MinfindResults"></div>
+		<div id="Minfind" class="content"></div>
+	</div><br><br>
+
+	<div class="website-div">
+		<div id="eBayResults"></div>
+		<div id="eBay" class="content"></div>
+	</div><br><br>
 </div>
+</body>
 
 <script>
 var keywords = "{{ keywords }}";

@@ -16,26 +16,35 @@ function getResults(data){
 				$('#count').text(new_count);
 
 				if (response.numResults > 0) {
-					$(data.idTag).append($("<h1></h1>").text(data.resultTitle));
+					var resultTitle = $("<h2></h2>").text(data.resultTitle);
+					$(resultTitle).attr("class", "subtitle thumbnail-darker result-title");
+					$(data.idTag + "Results").append(resultTitle);
 
 					for (i = 0; i < response.numResults; i++) {
+						var listingDiv = $("<div></div>").attr("class", "listing-div thumbnail-darker");
 						var listing = response.listingsFound[i];
-						var title = $("<p></p>").text(listing.title);
-						var price = $("<p></p>").text(listing.price);
-						var link = $("<a></a>").attr("href", listing.url).text("URL");
+
+						var link = $("<a></a>").attr("href", listing.url);
+						var title = $("<h6></h6>").text(listing.title).attr("class", "result-title-price");
+						$(link).append(title);
+
+						var price = $("<h6></h6>").text("$" + listing.price).attr("class", "result-title-price");
+						var button = $("<a></a>").text("Favorite").addClass("favorite btn btn-default").attr("value", JSON.stringify(listing));
 
 						if (listing.description != null) {
-							description = $("<p></p>").text(listing.description);
+							description = $("<p></p>").text(listing.description).addClass("listing-p");
 						};
-						$(data.idTag).append(title, price, description, link);
+						$(listingDiv).append(link, price, button, description);
 
-						for (j = 0; j < listing.image_urls.length; j++) {
-							image = $("<img>").attr("src", listing.image_urls[j]);
-							$(data.idTag).append(image);
-						};
+						// for (j = 0; j < listing.image_urls.length; j++) {
+						// 	image = $("<img>").attr("src", listing.image_urls[j]);
+						// 	$(data.idTag).append(image);
+						// };
+						image = $("<img>").attr("src", listing.image_urls[0]);
+						image_div = $("<div></div>").append(image);
+						$(listingDiv).append(image_div);
 
-						var button = $("<button></button>").text("Favorite").addClass("favorite").attr("value", JSON.stringify(listing));
-						$(data.idTag).append(button);
+						$(data.idTag).append(listingDiv);
 					};
 				} else {
 					$(data.idTag).append($("<h1></h1>").text(data.noResultsString));
@@ -49,19 +58,19 @@ var searchData = {
 	etsyData : {
 				routeUrl : "/search_etsy",
 				idTag : "#Etsy",
-				resultTitle : "Etsy Results:", 
+				resultTitle : "Etsy Results", 
 				noResultsString : "No matching results found on Etsy"
 				},
 	ebayData : {
 				routeUrl : "/search_ebay",
 				idTag : "#eBay",
-				resultTitle : "eBay Results:", 
+				resultTitle : "eBay Results", 
 				noResultsString : "No matching results found on eBay"
 				},
 	minfindData : {
 				routeUrl : "/scrape_minfind",
 				idTag : "#Minfind",
-				resultTitle : "Minfind Results:", 
+				resultTitle : "Minfind Results", 
 				noResultsString : "No matching results found on Minfind"
 				}
 };
@@ -95,3 +104,7 @@ function addToFavorite(evt){
 };
 
 $('.website_div').on('click', '.favorite', addToFavorite);
+
+$(window).load(function(){
+	$('#loading').hide();
+});
