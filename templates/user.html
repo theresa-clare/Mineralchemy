@@ -1,51 +1,120 @@
 {% extends 'base.html' %}
 {% block content %}
 
-	<h1>Favorite Listings of {{ user.email }}:</h1>
+<style>
 
-	<h2>Minfind</h2>
-	{% if minfind_listings == [] %}
-		<p>No favorites from Minfind</p>
-	{% else %}
-		{% for minfind_result in minfind_listings %}
-		<ul>
-			<li>{{ minfind_result["title"] }}</li>
-			<li>{{ minfind_result["price"] }}</li>
-			<li>{{ minfind_result["description"] }}</li>
-			<li><a href="{{ minfind_result["url"] }}">URL</a></li>
-			<li><img src="{{ minfind_result["primary_image"] }}"></li>
-		</ul>
-		{% endfor %}
-	{% endif%}
+.result-title {
+	padding-left: 17px;
+	color: purple;
+}
 
-	<h2>Etsy</h2>
-	{% if etsy_listings == [] %}
-		<p>No favorites from Etsy</p>
-	{% else %}
-		{% for etsy_result in etsy_listings %}
-		<ul>
-			<li>{{ etsy_result["title"] }}</li>
-			<li>{{ etsy_result["price"] }}</li>
-			<li>{{ etsy_result["description"] }}</li>
-			<li><a href="{{ etsy_result["url"] }}">URL</a></li>
-			<li><img src="{{ etsy_result["primary_image"] }}"></li>
-		</ul>
-		{% endfor %}
-	{% endif %}
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
 
-	<h2>eBay</h2>
-	{% if ebay_listings == [] %}
-		<p>No favorites from eBay</p>
-	{% else %}
-		{% for ebay_result in ebay_listings %}
-		<ul>
-			<li>{{ ebay_result["title"] }}</li>
-			<li>{{ ebay_result["price"] }}</li>
-			<li>{{ ebay_result["description"] }}</li>
-			<li><a href="{{ ebay_result["url"] }}">URL</a></li>
-			<li><img src="{{ ebay_result["primary_image"] }}"></li>
-		</ul>
-		{% endfor %}
-	{% endif %}
+.no-results {
+	color: black;
+}
+
+.result-title-price { 
+	font-family: 'Wire One', Helvetica, Arial, sans-serif;
+	font-weight:normal;
+	margin-bottom:15px; 
+	color: black; 
+	line-height:1em;
+	line-height:.9em;
+	font-size:3em;
+	margin-top:0;
+	margin-bottom:20px; 
+}
+
+.listing-p {
+	color: black;
+}
+
+.website-div {
+	margin-left: auto;
+	margin-right: auto;
+	height: 700px;
+	width: 1000px;
+}
+
+.content {
+	height: 600px;
+	overflow: auto;
+}
+
+</style>
+
+<body>
+	<h2 class="text-center title">Favorite Listings of {{ user.email }}:</h2>
+
+	<div class="website-div">
+		<h2 class="subtitle thumbnail-darker result-title">Minfind</h2>
+
+		{% if minfind_listings == [] %}
+			<h2 class="subtitle no-results thumbnail-darker">No favorites from Minfind</h2>
+
+		{% else %}
+		<div class="content thumbnail-darker">
+			{% for minfind_result in minfind_listings %}
+			<div>
+				<a href="{{ minfind_result["url"] }}">
+					<h2 class="result-title-price">{{ minfind_result["title"] }}</h2>
+				</a>
+				<h2 class="result-title-price">{{ minfind_result["price"] }}</h2>
+				<h6 class="listing-p">{{ minfind_result["description"] }}</h6>
+				<img src="{{ minfind_result["primary_image"] }}">
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div><br><br>
+
+	<div class="website-div">
+		<h2 class="subtitle thumbnail-darker result-title">Etsy</h2>
+
+		{% if etsy_listings == [] %}
+			<h2 class="subtitle no-results thumbnail-darker">No favorites from Etsy</h2>
+
+		{% else %}
+		<div class="content thumbnail-darker">
+			{% for etsy_result in etsy_listings %}
+			<div>
+				<a href="{{ etsy_result["url"] }}">
+					<h2 class="result-title-price">{{ etsy_result["title"] }}</h2>
+				</a>
+				<h2 class="result-title-price">{{ etsy_result["price"] }}</h2>
+				<h6 class="listing-p">{{ etsy_result["description"] }}</h6>
+				<img src="{{ etsy_result["primary_image"] }}">
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div><br><br>
+
+	<div class="website-div">
+		<h2 class="subtitle thumbnail-darker result-title">eBay</h2>
+
+		{% if ebay_listings == [] %}
+			<h2 class="subtitle no-results thumbnail-darker">No favorites from eBay</h2>
+
+		{% else %}
+		<div class="content thumbnail-darker">
+			{% for ebay_result in ebay_listings %}
+			<div>
+				<a href="{{ ebay_result["url"] }}">
+					<h2 class="result-title-price">{{ ebay_result["title"] }}</h2>
+				</a>
+				<h2 class="result-title-price">{{ ebay_result["price"] }}</h2>
+				<h6 class="listing-p">{{ ebay_result["description"] }}</h6>
+				<img src="{{ ebay_result["primary_image"] }}">
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div><br><br>
+</body>
 
 {% endblock %}
