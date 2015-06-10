@@ -32,18 +32,22 @@
 
 #Elements-title {
   color: orange;
+  padding-left: 17px;
 }
 
 #SS-title {
   color: green;
+  padding-left: 17px;
 }
 
 #Halides-title {
   color: teal;
+  padding-left: 17px;
 }
 
 #Oxides-title {
   color: purple;
+  padding-left: 17px;
 }
 
 </style>
@@ -146,10 +150,6 @@ classification_data = {
 for (var key in classification_data){
   new_div = $("<div></div>").attr("id", classification_data[key][1]);
   $(new_div).attr("class", classification_data[2]);
-
-  // header = $("<h2></h2>").attr("class", "text-center title");
-  // $(header).append(classification_data[2]);
-  // $(new_div).append(header);
 
   $("#" + classification_data[key][2]).append(new_div);
   make_chart(classification_data[key][0], ("#" + classification_data[key][1]), classification_data[2]);
