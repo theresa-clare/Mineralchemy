@@ -34,41 +34,50 @@ The source, target, and URL data is stored in CSV files. The creation of nodes, 
 
 Clone or flork this repo:
 
-'''
+```
 insert github link here
-'''
+
+```
 
 Create and activate a virtual environment inside your project directory:
 
-'''
+```
+
 virtualenv env
+
 source env/bin/activate
-'''
+
+```
 
 Install the requirements:
 
-'''
+```
 pip install -r requirements.txt
-'''
 
-Get your own secret keys for [Etsy](http://developer.etsy.com) and [eBay](www.ebay.com). Save them to a file <kbd>secrets.txt<kbd>. Your file should look something like this:
+```
 
-'''
+Get your own secret keys for [Etsy](http://developer.etsy.com) and [eBay](www.ebay.com). Save them to a file <kbd>secrets.txt</kbd>. Your file should look something like this:
+
+```
 YOUR_ETSY_KEY
 YOUR_EBAY_KEY
-'''
+
+```
 
 Set up the database:
 
-'''
+```
 python -i model.py
 db.create_all()
-'''
+
+```
 
 Run the app:
-'''
+
+```
 python server.py
-'''
+
+```
 
 Navigate to 'localhost:5000/' to search and discover minerals!
 
