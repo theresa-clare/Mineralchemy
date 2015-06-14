@@ -4,9 +4,9 @@ Designed for new and old rockhounds alike, Mineralchemy is a web application tha
 
 ##Technology Stack
 
-Frontend: HTML, CSS, Javascript, jQuery, D3, Bootstrap, Jinja
-Backend: Python, Flask, SQLite, BeautifulSoup
-APIs: Etsy, eBay
+Frontend: HTML, CSS, Javascript, jQuery, D3, Bootstrap, Jinja<br/>
+Backend: Python, Flask, SQLite, BeautifulSoup<br/>
+APIs: Etsy, eBay<br/>
 
 
 ##Search for Minerals
@@ -73,6 +73,6 @@ python server.py
 
 Navigate to 'localhost:5000/' to search and discover minerals!
 
-###Future Plans
+##Future Plans
 
 Mineralchemy is the developer's first independent programming project. With only 4 weeks to complete this project, time was scarce to design, build, and optimize Mineralchemy. More features will be implemented in the near future (e.g. full Strunz mineral classification on the Discover page, searching the classification visualizations by a specific mineral, sorting listings by price, viewing all listings at once instead of separated by origin).
