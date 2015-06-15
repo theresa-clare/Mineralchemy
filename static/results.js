@@ -29,12 +29,13 @@ function getResults(data){
 						$(link).append(title);
 
 						var price = $("<h6></h6>").text("$" + listing.price).attr("class", "result-title-price");
-						var button = $("<a></a>").text("Favorite").addClass("favorite btn btn-default").attr("value", JSON.stringify(listing));
+						var button = $("<button></button>").text("Favorite").addClass("favorite btn btn-default").attr("value", JSON.stringify(listing));
+						var success_text = $("<p></p>").attr("id", "ID" + listing.listing_id).attr("class", "listing-p-favorite");
 
 						if (listing.description != null) {
 							description = $("<p></p>").text(listing.description).addClass("listing-p");
 						};
-						$(listingDiv).append(link, price, button, description);
+						$(listingDiv).append(link, price, button, success_text, description);
 
 						// for (j = 0; j < listing.image_urls.length; j++) {
 						// 	image = $("<img>").attr("src", listing.image_urls[j]);
@@ -75,6 +76,7 @@ var searchData = {
 				}
 };
 
+
 $(document).ready(function() {
 	getResults(searchData.etsyData);
 	getResults(searchData.ebayData);
@@ -94,17 +96,13 @@ function addToFavorite(evt){
 				type: 'GET',
 				url: '/add_to_favorites',
 				data: listing,
-				dataType: 'text',
+				dataType: 'JSON',
 				success: function(response) {
-					alert(response);
+					$('#ID' + response.listing_id).text(response.success_text);
 				}
 			}
 		);
 	};
 };
 
-$('.website_div').on('click', '.favorite', addToFavorite);
-
-$(window).load(function(){
-	$('#loading').hide();
-});
+$('#all-results').on('click', '.favorite', addToFavorite);

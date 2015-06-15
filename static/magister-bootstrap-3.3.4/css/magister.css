@@ -248,7 +248,7 @@ a:hover, a:active { color:#fff; text-decoration: underline; }
 
 
 /********************************************************/
-/*                        Other                         */
+/*                    Mineralchemy                      */
 /********************************************************/
 
 form {
@@ -293,6 +293,10 @@ svg {
 	        border-radius: 2px;
 }
 
+
+.listing-p-favorite {
+	color: purple;
+}
 
 
 

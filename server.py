@@ -113,12 +113,11 @@ def get_results():
 		flash("Minimum price must be smaller than maximum price!")
 		return redirect("/search")
 	else:
-		return render_template( "search_results.html", keywords=keywords, min_price=min_price, max_price=max_price, user_id=user_id )	
+		return render_template("search_results.html", keywords=keywords, min_price=min_price, max_price=max_price, user_id=user_id )	
 
 
 @app.route("/scrape_minfind", methods=['GET'])
 def get_minfind_results():
-
 	keywords = request.args.get('keywords').encode(encoding='UTF-8',errors='strict')
 	min_price = float(request.args.get('min_price'))
 	max_price = float(request.args.get('max_price'))
@@ -127,12 +126,12 @@ def get_minfind_results():
 
 	success = { "numResults": minfind_num_results, 
 				"listingsFound": minfind_listings }
+
 	return jsonify(success)
 
 
 @app.route("/search_etsy", methods=['GET'])
 def get_etsy_results():
-
 	keywords = request.args.get('keywords').encode(encoding='UTF-8',errors='strict')
 	min_price = float(request.args.get('min_price'))
 	max_price = float(request.args.get('max_price'))
@@ -141,6 +140,7 @@ def get_etsy_results():
 
 	success = { "numResults": etsy_num_results,
 				"listingsFound": etsy_listings }
+
 	return jsonify(success)
 
 
@@ -154,6 +154,7 @@ def get_ebay_results():
 
 	success = { "numResults": int(ebay_num_results), 
 				"listingsFound": ebay_listings }
+
 	return jsonify(success)
 
 
@@ -175,13 +176,18 @@ def add_to_favorites():
 	cursor.execute(old_favorite_query, (user_id, listing_id))
 	old_favorite_result = cursor.fetchall()
 
+	success_response = { "listing_id": listing_id}
+
 	if old_favorite_result != []:
-		return "You have already added this to your favorites!"
+		success_response["success_text"] = "You have already added this to your favorites!"
+		return jsonify(success_response)
 	else:
 		new_favorite_query = "INSERT INTO favorites (user_id, listing_origin, listing_id, title, price, description, url, primary_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 		cursor.execute(new_favorite_query, (user_id, listing_origin, listing_id, title, price, description, url, primary_image))
 		connection.commit()
-		return "Successfully added to your favorites!"
+
+		success_response["success_text"] = "Successfully added to your favorites!"
+		return jsonify(success_response)
 
 
 @app.route("/user/<int:user_id>", methods=['GET'])
