@@ -29,6 +29,9 @@
 				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 					<li><a href="/" class="active">Home</a></li>
 
+					<li><a href="/search">Search</a></li>
+					<li><a href="/discover">Discover</a></li>
+
 					{% if not session.get('user_id') %}
 					<li><a href="/login">Log In</a></li>
 					<li><a href="/signup">Register</a></li>
@@ -36,9 +39,6 @@
 					<li><a href="/user/{{ session.get('user_id') }}">Profile</a></li>
 					<li><a href="/logout">Log Out</a></li>
 					{% endif %}
-
-					<li><a href="/search">Search</a></li>
-					<li><a href="/discover">Discover</a></li>
 				</ul>
 			</div>
 		</div>
@@ -51,8 +51,8 @@
 	{% block content %}
 	{% endblock %}
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.js"></script>
 	
 	<!-- Magister template scripts -->
 	<script src="assets/js/modernizr.custom.72241.js"></script>
