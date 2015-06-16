@@ -2,10 +2,17 @@
 {% block content %}
 
 <body>
-<div class="container" id="all-results">
-	<h2 class="text-center title" id="count">0</h2>
-	<h2 class="text-center title">Results Found</h2>
+<div class="text-center title" id="loading">
+	<p>Searching for Results</p>
+	<img src="http://m.music.cbc.ca/resources/images/loadingicon.gif">
+</div>
 
+
+<h2 class="text-center title" id="count">0</h2>
+<h2 class="text-center title">Results Found</h2>
+
+
+<div class="container" id="all-results">
 	<div class="website-div">
 		<div id="EtsyResults"></div>
 		<div id="Etsy" class="content"></div>

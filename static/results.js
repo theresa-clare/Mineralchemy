@@ -81,6 +81,14 @@ $(document).ready(function() {
 	getResults(searchData.etsyData);
 	getResults(searchData.ebayData);
 	getResults(searchData.minfindData);
+
+	$(document).ajaxStart(function() {
+		$('#loading').css("display", "block");
+	});
+
+	$(document).ajaxComplete(function() {
+		$('#loading').css("display", "none");
+	});
 });
 
 function addToFavorite(evt){
