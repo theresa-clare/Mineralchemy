@@ -327,10 +327,17 @@ img {
 	overflow: auto;
 }
 
+#search-results {
+	display: none;
+}
 
+#loading-gif {
+	height: 200px;
+}
 
-
-
+#loading {
+	margin-top: 15%;
+}
 
 
 

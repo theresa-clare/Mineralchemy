@@ -88,6 +88,7 @@ $(document).ready(function() {
 
 	$(document).ajaxComplete(function() {
 		$('#loading').css("display", "none");
+		$('#search-results').css("display", "block");
 	});
 });
 
