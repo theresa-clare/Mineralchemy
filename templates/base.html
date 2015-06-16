@@ -33,8 +33,8 @@
 					<li><a href="/discover">Discover</a></li>
 
 					{% if not session.get('user_id') %}
-					<li><a href="/login">Log In</a></li>
 					<li><a href="/signup">Register</a></li>
+					<li><a href="/login">Log In</a></li>
 					{% else %}
 					<li><a href="/user/{{ session.get('user_id') }}">Profile</a></li>
 					<li><a href="/logout">Log Out</a></li>
