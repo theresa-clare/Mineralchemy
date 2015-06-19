@@ -4,9 +4,9 @@ Designed for new and old rockhounds alike, Mineralchemy is a web application tha
 
 ##Technology Stack
 
-Frontend: HTML, CSS, Javascript, jQuery, D3, Bootstrap, Jinja<br/>
-Backend: Python, Flask, SQLite, BeautifulSoup<br/>
-APIs: Etsy, eBay<br/>
+**Frontend:** HTML, CSS, Javascript, jQuery, D3, Bootstrap, Jinja<br/>
+**Backend:** Python, Flask, SQLite, BeautifulSoup<br/>
+**APIs:** Etsy, eBay<br/>
 
 ![image](/static/images/homepage.png)
 
@@ -28,7 +28,7 @@ To use this feature, users must create an account or sign in prior to searching.
 A user can view his or her favorite listings by visiting the profile page. The database is queried for all of the user's favorite listings, which are then displayed by origin.
 
 ![image](/static/images/login.png)
-![image](/static/images/search_results.png)
+![image](/static/images/search_results4.png)
 
 ##Discover Minerals
 
