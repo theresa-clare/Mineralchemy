@@ -8,6 +8,7 @@ Frontend: HTML, CSS, Javascript, jQuery, D3, Bootstrap, Jinja<br/>
 Backend: Python, Flask, SQLite, BeautifulSoup<br/>
 APIs: Etsy, eBay<br/>
 
+![image](/static/images/homepage.png)
 
 ##Search for Minerals
 
@@ -15,6 +16,10 @@ Each search is composed of keywords (single or multi-worded string) and a price 
 
 Listings returned from the Etsy and eBay APIs and those scraped from Mindat using BeautifulSoup are parsed and put back together in a uniform format. Along with the number of listings found, this is returned as a JSON response to the AJAX call. Once received, the DOM is updated dynamically by adding elements using jQuery.
 
+![image](/static/images/search.png)
+![image](/static/images/search_results1.png)
+![image](/static/images/search_results2.png)
+![image](/static/images/search_results3.png)
 
 ##Favorite Minerals
 
@@ -22,6 +27,8 @@ To use this feature, users must create an account or sign in prior to searching.
 
 A user can view his or her favorite listings by visiting the profile page. The database is queried for all of the user's favorite listings, which are then displayed by origin.
 
+![image](/static/images/login.png)
+![image](/static/images/search_results.png)
 
 ##Discover Minerals
 
@@ -29,6 +36,8 @@ Users can discover minerals by exploring radial tree visualizations of the Nicke
 
 The source, target, and URL data is stored in CSV files. The creation of nodes, links, and hierarchical associations from these files is completed via D3.
 
+![image](/static/images/discover1.png)
+![image](/static/images/discover2.png)
 
 ##Set up
 
