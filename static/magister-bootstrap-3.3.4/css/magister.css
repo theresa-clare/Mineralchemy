@@ -1,5 +1,5 @@
 html {
-	background:#505D6E url(/static/rheniite.jpg) no-repeat center center fixed; 
+	background:#505D6E url(/static/images/rheniite.jpg) no-repeat center center fixed; 
 	min-height:100%;
 	-webkit-background-size: cover;
 	   -moz-background-size: cover;
@@ -265,6 +265,7 @@ input {
 
 .lower-container {
 	padding-top: 8%;
+	padding-top: 12%;
 }
 
 svg {
@@ -290,9 +291,10 @@ svg {
 	color: purple;
 }
 
-img {
+.listing-img {
 	max-width: 100%;
 	max-height: 100%;
+	box-shadow: 7px 7px 5px #888888;
 }
 
 .no-results {
@@ -320,6 +322,7 @@ img {
 	margin-right: auto;
 	height: 700px;
 	width: 1000px;
+	margin-bottom: 35px;
 }
 
 .content {
@@ -339,8 +342,19 @@ img {
 	margin-top: 15%;
 }
 
+.container.row.listing-row {
+	display: flex;
+	overflow: auto;
+	width: 1000px;
+}
 
+.column.listing-column {
+	flex: 1;
+}
 
+hr { 
+	margin: 5px 0 5px 0;
+}
 
 
 /***********************************************************/

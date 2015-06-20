@@ -21,9 +21,18 @@ function getResults(data){
 					$(data.idTag + "Results").append(resultTitle);
 
 					for (i = 0; i < response.numResults; i++) {
+						// Create main div for each listing
 						var listingDiv = $("<div></div>").attr("class", "listing-div thumbnail-darker");
 						var listing = response.listingsFound[i];
 
+						// Create two separate divs for text and image in listing
+						var listingTextDiv = $("<div></div>").attr("class", "column listing-column");
+						var listingImgDiv = $("<div></div>").attr("class", "column listing-column");
+
+						// Create row to nest text and image divs
+						var listingRow = $("<div></div>").attr("class", "container row listing-row");
+
+						// Create linked title, price, favorite button, and text notification
 						var link = $("<a></a>").attr("href", listing.url);
 						var title = $("<h6></h6>").text(listing.title).attr("class", "result-title-price");
 						$(link).append(title);
@@ -35,17 +44,28 @@ function getResults(data){
 						if (listing.description != null) {
 							description = $("<p></p>").text(listing.description).addClass("listing-p");
 						};
-						$(listingDiv).append(link, price, button, success_text, description);
 
-						// for (j = 0; j < listing.image_urls.length; j++) {
-						// 	image = $("<img>").attr("src", listing.image_urls[j]);
-						// 	$(data.idTag).append(image);
-						// };
-						image = $("<img>").attr("src", listing.image_urls[0]);
+						// Add in all created elements to listing div
+						// $(listingDiv).append(link, price, button, success_text, description);
+						$(listingTextDiv).append(link, price, button, success_text, description);
+
+						// Get first image and add it to img div
+						image = $("<img>").attr("src", listing.image_urls[0]).attr("class", "listing-img");
 						image_div = $("<div></div>").append(image);
-						$(listingDiv).append(image_div);
+						$(listingImgDiv).append(image_div);
 
+						// Add text and img div to listing row
+						$(listingRow).append(listingTextDiv);
+						$(listingRow).append(listingImgDiv);
+
+						// Add listing row to main listing div
+						$(listingDiv).append(listingRow)
+
+						// Add the main listing div to the overall origin section
 						$(data.idTag).append(listingDiv);
+
+						// Add divider to main listing div
+						$(data.idTag).append("<hr>");
 					};
 				} else {
 					$(data.idTag).append($("<h1></h1>").text(data.noResultsString));
