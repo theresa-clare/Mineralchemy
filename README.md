@@ -8,6 +8,7 @@ Designed for new and old rockhounds alike, Mineralchemy is a web application tha
 **Backend:** Python, Flask, SQLite, BeautifulSoup<br/>
 **APIs:** Etsy, eBay<br/>
 
+![image](/static/images/mineralchemy-architecture.png)
 ![image](/static/images/homepage.png)
 
 ##Search for Minerals
