@@ -262,9 +262,7 @@ input {
 	color: black;
 }
 
-
 .lower-container {
-	padding-top: 8%;
 	padding-top: 12%;
 }
 
@@ -317,29 +315,21 @@ svg {
 	color: black;
 }
 
+.listing-origin {	
+	height: auto;
+	overflow: scroll;
+	max-height: 700px;
+}
+
 .website-div {
 	margin-left: auto;
 	margin-right: auto;
-	height: 700px;
-	width: 1000px;
 	margin-bottom: 35px;
-}
-
-.content {
-	height: 600px;
-	overflow: auto;
+	width: 1000px;
 }
 
 #search-results {
 	display: none;
-}
-
-#loading-gif {
-	height: 200px;
-}
-
-#loading {
-	margin-top: 15%;
 }
 
 .container.row.listing-row {

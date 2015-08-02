@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<body>
-<div class="text-center title" id="loading">
-	<p>Searching for Results</p>
-	<img src="http://1.bp.blogspot.com/-ioP8upBQiXo/T_pNt_EY4aI/AAAAAAAAD-8/KHhoI2Jcc5s/s640/crystal+rotating+gif.gif" id="loading-gif">
+<div class="container" id="loading">
+	<div class="row">
+		<div class="col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1 text-center">
+			<h1 class="title">Searching for Results</h1>
+			<img src="http://s1.ticketm.net/tm/en-us/img/sys/1000/gray75_polling.gif">
+		</div>
+	</div>
 </div>
 
 <div id="search-results">
@@ -16,21 +19,21 @@
 <div class="container" id="all-results">
 	<div class="website-div">
 		<div id="EtsyResults"></div>
-		<div id="Etsy" class="content listing-origin">
+		<div id="Etsy" class="listing-origin">
 		</div>
 	</div><br><br>
 
 	<div class="website-div">
 		<div id="eBayResults"></div>
-		<div id="eBay" class="content listing-origin"></div>
+		<div id="eBay" class="listing-origin"></div>
 	</div><br><br>
 
 	<div class="website-div">
 		<div id="MinfindResults"></div>
-		<div id="Minfind" class="content listing-origin"></div>
+		<div id="Minfind" class="listing-origin"></div>
 	</div><br><br>
 </div>
-</body>
+
 
 <script>
 var keywords = "{{ keywords }}";

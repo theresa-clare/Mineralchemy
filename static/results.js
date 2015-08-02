@@ -68,7 +68,7 @@ function getResults(data){
 						$(data.idTag).append("<hr>");
 					};
 				} else {
-					$(data.idTag).append($("<h1></h1>").text(data.noResultsString));
+					$(data.idTag).addClass("lead thumbnail").append($("<h1></h1>").text(data.noResultsString));
 				};
 			}
 		}
