@@ -33,7 +33,8 @@ def scrape_minfind(keywords, min_price, max_price):
 			main_content = details_soup.find("div", {"id":"maincontent"})
 
 			unicode_description = main_content.find("div", {"class":"fptext"}).contents[2]
-			listing_dict["description"] = normalize('NFKD', unicode_description)
+			listing_dict["description"] = unicode_description
+
 
 			image_urls = []
 			links = main_content.find("div", {"class":"allimages"}).findAll("a")
