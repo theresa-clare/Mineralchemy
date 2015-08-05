@@ -342,6 +342,10 @@ hr {
 	margin: 5px 0 5px 0;
 }
 
+td {
+	padding: 10px;
+}
+
 .vertical-center {
 	min-height: 100%;
 	min-height: 100vh;
