@@ -262,10 +262,6 @@ input {
 	color: black;
 }
 
-.lower-container {
-	padding-top: 12%;
-}
-
 svg {
 	display: block;
 	margin: auto;
@@ -346,6 +342,13 @@ hr {
 	margin: 5px 0 5px 0;
 }
 
+.vertical-center {
+	min-height: 100%;
+	min-height: 100vh;
+
+	display: flex;
+	align-items: center;
+}
 
 /***********************************************************/
 /*                   Theme: text shadows                   */
