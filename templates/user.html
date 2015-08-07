@@ -1,74 +1,106 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<body>
-	<h2 class="text-center title">Favorite Listings of {{ user.email }}:</h2>
 
-	<div class="website-div">
-		<h2 class="subtitle thumbnail-darker result-title">Minfind</h2>
+<h2 class="text-center title">Favorite Listings of {{ user.email }}:</h2>
+
+<div class="website-div">
+	<h2 class="subtitle thumbnail-darker result-title">Etsy</h2>
+	<div class="listing-origin">
+
+	{% if etsy_listings == [] %}
+		<div class="lead thumbnail">
+			<h1>No favorites from Etsy</h1>
+		</div>
+
+	{% else %}
+		{% for etsy_result in etsy_listings %}
+			<div class="listing-div thumbnail-darker">
+				<div class="container row listing-row">
+					<div class="column listing-column">
+						<a href="{{ etsy_result["url"] }}">
+							<h6 class="result-title-price">{{ etsy_result["title"] }}</h6>
+						</a>
+						<h6 class="result-title-price">${{ etsy_result["price"] }}</h6>
+						<p class="listing-p">{{ etsy_result["description"] }}</p>
+					</div>
+
+					<div class="column listing-column">
+						<img src="{{ etsy_result["primary_image"] }}" class="listing-img">
+					</div>
+				</div>
+			</div>
+			<hr>
+		{% endfor %}
+	{% endif %}
+
+	</div>
+</div><br><br>
+
+<div class="website-div">
+	<h2 class="subtitle thumbnail-darker result-title">eBay</h2>
+	<div class="listing-origin">
+
+	{% if ebay_listings == [] %}
+		<div class="lead thumbnail">
+			<h1>No favorites from eBay</h1>
+		</div>
+
+	{% else %}
+		{% for ebay_result in ebay_listings %}
+			<div class="listing-div thumbnail-darker">
+				<div class="container row listing-row">
+					<div class="column listing-column">
+						<a href="{{ ebay_result["url"] }}">
+							<h6 class="result-title-price">{{ ebay_result["title"] }}</h6>
+						</a>
+						<h6 class="result-title-price">${{ ebay_result["price"] }}</h6>
+						<p class="listing-p">{{ ebay_result["description"] }}</p>
+					</div>
+
+					<div class="column listing-column">
+						<img src="{{ ebay_result["primary_image"] }}" class="listing-img">
+					</div>
+				</div>
+			</div>
+			<hr>
+		{% endfor %}
+	{% endif %}
+
+	</div>
+</div><br><br>
+
+<div class="website-div">
+	<h2 class="subtitle thumbnail-darker result-title">Minfind</h2>
+	<div class="listing-origin">
 
 		{% if minfind_listings == [] %}
-			<h2 class="subtitle no-results thumbnail-darker">No favorites from Minfind</h2>
+			<div class="lead thumbnail">
+				<h1>No favorites from Minfind</h1>
+			</div>
 
 		{% else %}
-		<div class="content thumbnail-darker">
 			{% for minfind_result in minfind_listings %}
-			<div>
-				<a href="{{ minfind_result["url"] }}">
-					<h2 class="result-title-price">{{ minfind_result["title"] }}</h2>
-				</a>
-				<h2 class="result-title-price">{{ minfind_result["price"] }}</h2>
-				<h6 class="listing-p">{{ minfind_result["description"] }}</h6>
-				<img src="{{ minfind_result["primary_image"] }}">
-			</div>
+				<div class="listing-div thumbnail-darker">
+					<div class="container row listing-row">
+						<div class="column listing-column">
+							<a href="{{ minfind_result["url"] }}">
+								<h6 class="result-title-price">{{ minfind_result["title"] }}</h6>
+							</a>
+							<h6 class="result-title-price">${{ minfind_result["price"] }}</h6>
+							<p class="listing-p">{{ minfind_result["description"] }}</p>
+						</div>
+
+						<div class="column listing-column">
+							<img src="{{ minfind_result["primary_image"] }}" class="listing-img">
+						</div>
+					</div>
+				</div>
+				<hr>
 			{% endfor %}
-		</div>
 		{% endif %}
-	</div><br><br>
 
-	<div class="website-div">
-		<h2 class="subtitle thumbnail-darker result-title">Etsy</h2>
-
-		{% if etsy_listings == [] %}
-			<h2 class="subtitle no-results thumbnail-darker">No favorites from Etsy</h2>
-
-		{% else %}
-		<div class="content thumbnail-darker">
-			{% for etsy_result in etsy_listings %}
-			<div>
-				<a href="{{ etsy_result["url"] }}">
-					<h2 class="result-title-price">{{ etsy_result["title"] }}</h2>
-				</a>
-				<h2 class="result-title-price">{{ etsy_result["price"] }}</h2>
-				<h6 class="listing-p">{{ etsy_result["description"] }}</h6>
-				<img src="{{ etsy_result["primary_image"] }}">
-			</div>
-			{% endfor %}
-		</div>
-		{% endif %}
-	</div><br><br>
-
-	<div class="website-div">
-		<h2 class="subtitle thumbnail-darker result-title">eBay</h2>
-
-		{% if ebay_listings == [] %}
-			<h2 class="subtitle no-results thumbnail-darker">No favorites from eBay</h2>
-
-		{% else %}
-		<div class="content thumbnail-darker">
-			{% for ebay_result in ebay_listings %}
-			<div>
-				<a href="{{ ebay_result["url"] }}">
-					<h2 class="result-title-price">{{ ebay_result["title"] }}</h2>
-				</a>
-				<h2 class="result-title-price">{{ ebay_result["price"] }}</h2>
-				<h6 class="listing-p">{{ ebay_result["description"] }}</h6>
-				<img src="{{ ebay_result["primary_image"] }}">
-			</div>
-			{% endfor %}
-		</div>
-		{% endif %}
-	</div><br><br>
-</body>
+	</div>
+</div><br><br>
 
 {% endblock %}
