@@ -19,8 +19,6 @@ Listings returned from the Etsy and eBay APIs and those scraped from Mindat usin
 
 ![image](/static/images/search.png)
 ![image](/static/images/search_results1.png)
-![image](/static/images/search_results2.png)
-![image](/static/images/search_results3.png)
 
 ##Favorite Minerals
 
@@ -42,7 +40,7 @@ The source, target, and URL data is stored in CSV files. The creation of nodes, 
 
 ##Set up
 
-Clone or flork this repo:
+Clone or fork this repo:
 
 ```
 https://github.com/theresa-clare/Mineralchemy.git
